@@ -9,4 +9,13 @@ class PokemonParams {
   });
 }
 
+class LoginUserParams {
+  final String email;
+  final String password;
+  const LoginUserParams({
+    required this.email,
+    required this.password,
+  });
+}
+
 class PokemonImageParams {}
