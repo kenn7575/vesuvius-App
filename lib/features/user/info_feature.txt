@@ -14,3 +14,10 @@ Data: Internal & external data, Api
     - repositories
 
 Api Used: https://pokeapi.co/
+
+Flow:
+1. user open app and start auth Flow
+2. we check if the user has an access token and if it is valid
+3. if not valid, we check if the user has an refresh token and if it is valid
+4. if yes, we fetch new access token and user data.
+5. else user just sees a login screen

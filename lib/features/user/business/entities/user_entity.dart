@@ -6,9 +6,11 @@ class UserEntity {
   final String lastName;
   final String email;
   final String phoneNumber;
-  final UserRoleEntity role;
-  final DateTime createdAt;
-  final DateTime updatedAt;
+  final int role;
+  final String createdAt;
+  final String updatedAt;
+  final String? accessToken;
+  final String? refreshToken;
 
   const UserEntity({
     required this.id,
@@ -19,5 +21,7 @@ class UserEntity {
     required this.role,
     required this.createdAt,
     required this.updatedAt,
+    this.accessToken,
+    this.refreshToken,
   });
 }

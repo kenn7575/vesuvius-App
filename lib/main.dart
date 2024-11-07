@@ -1,4 +1,6 @@
-import 'package:app/DataTheme.dart';
+import 'package:app/data_theme.dart';
+import 'package:app/features/user/presentation/pages/login_page.dart';
+import 'package:app/features/user/presentation/providers/user_provider.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'features/pokemon/presentation/providers/pokemon_provider.dart';
@@ -25,6 +27,9 @@ class MyApp extends StatelessWidget {
         ),
         ChangeNotifierProvider(
           create: (context) => SelectedPokemonItemProvider(),
+        ),
+        ChangeNotifierProvider(
+          create: (context) => UserProvider(),
         ),
       ],
       child: MaterialApp(
@@ -53,11 +58,17 @@ class _HomeState extends State<Home> {
     Provider.of<PokemonProvider>(context, listen: false).eitherFailureOrPokemon(
       value: (selectedPokemonItem.number + 1).toString(),
     );
+
     super.initState();
   }
 
   @override
   Widget build(BuildContext context) {
-    return const Skeleton();
+    // login logic
+    if (Provider.of<UserProvider>(context, listen: true).user == null) {
+      return const LoginPage();
+    } else {
+      return const Skeleton();
+    }
   }
 }

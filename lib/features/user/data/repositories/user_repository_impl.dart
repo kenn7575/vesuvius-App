@@ -1,5 +1,5 @@
+import 'package:app/features/user/data/models/login_user_model.dart';
 import 'package:dartz/dartz.dart';
-
 import 'package:app/core/connection/network_info.dart';
 import 'package:app/core/errors/exceptions.dart';
 import 'package:app/core/errors/failure.dart';
@@ -19,11 +19,11 @@ class UserRepositoryImpl implements UserRepository {
   });
 
   @override
-  Future<Either<Failure, UserModel>> loginUser(
+  Future<Either<Failure, LoginUserModel>> loginUser(
       {required LoginUserParams loginUserParams}) async {
     if (await networkInfo.isConnected!) {
       try {
-        UserModel remoteUser =
+        LoginUserModel remoteUser =
             await remoteDataSource.loginUser(loginUserParams: loginUserParams);
 
         return Right(remoteUser);
@@ -31,15 +31,15 @@ class UserRepositoryImpl implements UserRepository {
         return Left(ServerFailure(errorMessage: 'This is a server exception'));
       }
     } else {
-      return Left(CacheFailure(errorMessage: 'No internet connection'));
+      return Left(ServerFailure(errorMessage: 'No internet connection'));
     }
   }
 
   @override
-  Future<Either<Failure, UserModel>> logoutUser() async {
+  Future<Either<Failure, UserModel>> getUser() async {
     if (await networkInfo.isConnected!) {
       try {
-        UserModel remoteUser = await remoteDataSource.logoutUser();
+        UserModel remoteUser = await remoteDataSource.getUser();
 
         return Right(remoteUser);
       } on ServerException {

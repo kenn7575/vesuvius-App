@@ -18,4 +18,18 @@ class LoginUserParams {
   });
 }
 
+class GetUserParams {
+  final int id;
+  const GetUserParams({
+    required this.id,
+  });
+}
+
 class PokemonImageParams {}
+
+class IsTokenExpiredParams {
+  final String token;
+  const IsTokenExpiredParams({
+    required this.token,
+  });
+}

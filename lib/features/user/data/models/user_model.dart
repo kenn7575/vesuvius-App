@@ -46,6 +46,6 @@ String kFirstName = 'first_name';
 String kLastName = 'last_name';
 String kEmail = 'email';
 String kPhoneNumber = 'phone_number';
-String kRole = 'role';
+String kRole = 'role_id';
 String kCreatedAt = 'created_at';
 String kUpdatedAt = 'updated_at';

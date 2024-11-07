@@ -1,3 +1,4 @@
+import 'package:app/features/user/presentation/widgets/login.dart';
 import 'package:flutter/material.dart';
 
 class LoginPage extends StatelessWidget {
@@ -7,7 +8,7 @@ class LoginPage extends StatelessWidget {
   Widget build(BuildContext context) {
     return const Scaffold(
       body: Center(
-        child: Text('Login'),
+        child: LoginScreen(),
       ),
     );
   }

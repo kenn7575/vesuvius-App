@@ -1,5 +1,4 @@
 String kTemplate = 'template';
-
 String kName = 'name';
 String kId = 'id';
 String kSprites = 'sprites';
@@ -10,5 +9,7 @@ String kOfficialArtwork = 'official-artwork';
 String kFrontDefault = 'front_default';
 String kFrontShiny = 'front_shiny';
 String kPath = 'front_shiny';
+
+String kBackendUrl = 'http://localhost:5005';
 
 int maxPokemonId = 1008;

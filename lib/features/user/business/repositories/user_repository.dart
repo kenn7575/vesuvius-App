@@ -7,5 +7,6 @@ abstract class UserRepository {
   Future<Either<Failure, UserEntity>> loginUser({
     required LoginUserParams loginUserParams,
   });
-  Future<Either<Failure, UserEntity>> logoutUser();
+
+  Future<Either<Failure, UserEntity>> getUser();
 }

@@ -1,4 +1,5 @@
 import 'package:app/features/new_order/presentation/pages/new_order_page.dart';
+import 'package:app/features/user/presentation/providers/user_provider.dart';
 import 'package:flutter/material.dart';
 import '../pokemon/presentation/pages/data_page.dart';
 import '../pokemon/presentation/pages/pokemon_page.dart';
@@ -21,7 +22,15 @@ class Skeleton extends StatelessWidget {
     return Scaffold(
       appBar: AppBar(
         centerTitle: true,
-        title: const Text('Café Vesuvius'),
+        title: const Text('Café Vesuviwss'),
+        actions: [
+          IconButton(
+            icon: const Icon(Icons.logout),
+            onPressed: () {
+              Provider.of<UserProvider>(context, listen: false).signout();
+            },
+          ),
+        ],
       ),
       body: pages[selectedPage],
       bottomNavigationBar: const CustomBottomBarWidget(),
