@@ -19,8 +19,4 @@ class ValidationFailure<T> extends Failure {
     required super.errorMessage,
     required this.fieldErrors,
   });
-
-  List<String>? getFieldError(String fieldName) {
-    return fieldErrors[fieldName];
-  }
 }
