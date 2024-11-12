@@ -1,18 +1,13 @@
-class MenuItemTypesEntity {
+class MenuItemTypeEntity {
   final int id;
   final String name;
-  final DateTime created_at;
-  final DateTime updated_at;
+  final DateTime createdAt;
+  final DateTime updatedAt;
 
-  const MenuItemTypesEntity({
+  const MenuItemTypeEntity({
     required this.id,
     required this.name,
-    required this.created_at,
-    required this.updated_at,
+    required this.createdAt,
+    required this.updatedAt,
   });
-
-
-  
 }
-
-

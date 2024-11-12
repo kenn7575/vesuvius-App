@@ -1,3 +1,4 @@
+import 'package:app/features/displayMenuItems/presentation/pages/menu_item_type_page.dart';
 import 'package:app/features/new_order/presentation/pages/new_order_page.dart';
 import 'package:app/features/user/presentation/providers/user_provider.dart';
 import 'package:flutter/material.dart';
@@ -7,11 +8,7 @@ import 'package:provider/provider.dart';
 import 'widgets/custom_bottom_bar_widget.dart';
 import 'providers/selected_page_provider.dart';
 
-List<Widget> pages = const [
-  NewOrderPage(),
-  PokemonPage(),
-  DataPage(),
-];
+List<Widget> pages = const [NewOrderPage(), PokemonPage(), MenuItemTypesPage()];
 
 class Skeleton extends StatelessWidget {
   const Skeleton({super.key});

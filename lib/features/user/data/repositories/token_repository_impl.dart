@@ -1,9 +1,6 @@
-import 'dart:ffi';
-
 import 'package:app/core/connection/network_info.dart';
 import 'package:app/core/errors/failure.dart';
 import 'package:app/core/params/params.dart';
-import 'package:app/features/user/business/entities/user_entity.dart';
 import 'package:app/features/user/business/repositories/token_repository.dart';
 import 'package:dartz/dartz.dart';
 import 'package:jwt_decode/jwt_decode.dart';

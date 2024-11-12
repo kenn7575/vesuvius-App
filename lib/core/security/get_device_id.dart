@@ -2,8 +2,6 @@ import 'package:device_info_plus/device_info_plus.dart';
 //platform
 import 'dart:io' show Platform;
 
-import 'package:flutter/material.dart';
-
 Future<String> getDeviceId() async {
   DeviceInfoPlugin deviceInfo = DeviceInfoPlugin();
 

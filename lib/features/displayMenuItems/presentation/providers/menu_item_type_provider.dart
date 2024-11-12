@@ -5,11 +5,11 @@ import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import '../../../../../core/connection/network_info.dart';
 import '../../../../../core/errors/failure.dart';
-import '../../data/datasources/menu_item_types_remote_data_source.dart';
-import '../../data/repositories/menu_item_types_repository_impl.dart';
+import '../../data/datasources/menu_item_type_remote_data_source.dart';
+import '../../data/repositories/menu_item_type_repository_impl.dart';
 
 class MenuItemTypesProvider extends ChangeNotifier {
-  MenuItemTypesEntity? menuItemTypes;
+  List<MenuItemTypeEntity>? menuItemTypes;
   Failure? failure;
 
   MenuItemTypesProvider({
@@ -18,20 +18,18 @@ class MenuItemTypesProvider extends ChangeNotifier {
   });
   // create repository
   void getMenuItemTypes() async {
-    MenuItemTypesRepositoryImpl repository = MenuItemTypesRepositoryImpl(
-      remoteDataSource: MenuItemTypesRemoteDataSourceImpl(
+    MenuItemTypeRepositoryImpl repository = MenuItemTypeRepositoryImpl(
+      remoteDataSource: MenuItemTypeRemoteDataSourceImpl(
         dio: Dio(),
       ),
-
       networkInfo: NetworkInfoImpl(
         DataConnectionChecker(),
       ),
-
     );
 
     // call usecase that has repository as parameter
     final failureOrMenuItemTypes =
-        await GetMenuItemTypes(menuItemTypesRepository: repository).call();
+        await GetMenuItemTypes(menuItemTypeRepository: repository).call();
 
     failureOrMenuItemTypes.fold(
       (Failure newFailure) {
@@ -40,7 +38,7 @@ class MenuItemTypesProvider extends ChangeNotifier {
         notifyListeners();
       },
       // if success, set the menuItemTypes and notify listeners
-      (MenuItemTypesEntity newMenuItemTypes) {
+      (List<MenuItemTypeEntity> newMenuItemTypes) {
         menuItemTypes = newMenuItemTypes;
         failure = null;
         notifyListeners();
