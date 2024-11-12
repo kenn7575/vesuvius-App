@@ -1,4 +1,5 @@
 import 'package:app/data_theme.dart';
+import 'package:app/features/displayMenuItems/presentation/providers/template_provider.dart';
 import 'package:app/features/user/presentation/pages/login_page.dart';
 import 'package:app/features/user/presentation/providers/user_provider.dart';
 import 'package:flutter/material.dart';
@@ -30,6 +31,9 @@ class MyApp extends StatelessWidget {
         ),
         ChangeNotifierProvider(
           create: (context) => UserProvider(),
+        ),
+        ChangeNotifierProvider(
+          create: (context) => MenuItemTypesProvider(),
         ),
       ],
       child: MaterialApp(
