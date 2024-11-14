@@ -25,6 +25,14 @@ class MenuItemModel extends MenuItemEntity {
     );
   }
 
+static List<MenuItemModel> fromJsonList(List<dynamic> jsonList) {
+    return jsonList
+        .map((json) => MenuItemModel.fromJson(json: json))
+        .toList();
+  }
+  
+  
+
   Map<String, dynamic> toJson() {
     return {
       kId: id,
@@ -36,6 +44,9 @@ class MenuItemModel extends MenuItemEntity {
       kUpdatedAt: updated_at,
       kIsActive: is_active,
     };
+  }
+  static List<Map<String, dynamic>> toJsonList(List<MenuItemModel> models) {
+    return models.map((model) => model.toJson()).toList();
   }
 }
 

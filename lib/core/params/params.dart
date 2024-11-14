@@ -33,3 +33,10 @@ class IsTokenExpiredParams {
     required this.token,
   });
 }
+
+class MenuItemsParams{
+  final int itemId;
+  const MenuItemsParams({
+    required this.itemId,
+  });
+}
