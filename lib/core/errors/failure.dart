@@ -1,5 +1,3 @@
-import 'package:app/core/params/params.dart';
-
 abstract class Failure {
   final String errorMessage;
   const Failure({required this.errorMessage});
@@ -21,8 +19,4 @@ class ValidationFailure<T> extends Failure {
     required super.errorMessage,
     required this.fieldErrors,
   });
-
-  List<String>? getFieldError(String fieldName) {
-    return fieldErrors[fieldName];
-  }
 }

@@ -1,5 +1,5 @@
 import 'package:app/core/constants/constants.dart';
-import 'package:app/core/errors/exceptions.dart';
+
 import 'package:app/core/errors/failure.dart';
 import 'package:app/core/security/get_device_id.dart';
 import 'package:dio/dio.dart';
@@ -11,7 +11,6 @@ final dio = Dio();
 Future<bool> refreshAccessToken() async {
   try {
     final refreshToken = await getRefreshToken();
-    print(refreshToken);
     if (refreshToken == null) return false;
 
     final response = await dio.post(

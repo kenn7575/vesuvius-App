@@ -68,6 +68,7 @@ class UserProvider extends ChangeNotifier {
     UserRepositoryImpl repository = UserRepositoryImpl(
       remoteDataSource: UserRemoteDataSourceImpl(
         dio: Dio(),
+        authenticatedDioClient: AuthenticatedDioClient(),
       ),
       networkInfo: NetworkInfoImpl(
         DataConnectionChecker(),
@@ -117,6 +118,7 @@ class UserProvider extends ChangeNotifier {
     UserRepositoryImpl repository = UserRepositoryImpl(
       remoteDataSource: UserRemoteDataSourceImpl(
         dio: Dio(),
+        authenticatedDioClient: AuthenticatedDioClient(),
       ),
       networkInfo: NetworkInfoImpl(
         DataConnectionChecker(),

@@ -27,8 +27,10 @@ class UserRepositoryImpl implements UserRepository {
             await remoteDataSource.loginUser(loginUserParams: loginUserParams);
 
         return Right(remoteUser);
-      } on ServerException {
-        return Left(ServerFailure(errorMessage: 'This is a server exception'));
+      } on ServerFailure catch (e) {
+        return Left(e);
+      } on ValidationFailure catch (e) {
+        return Left(e);
       }
     } else {
       return Left(ServerFailure(errorMessage: 'No internet connection'));

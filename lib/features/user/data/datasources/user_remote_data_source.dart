@@ -15,8 +15,12 @@ abstract class UserRemoteDataSource {
 
 class UserRemoteDataSourceImpl implements UserRemoteDataSource {
   final Dio dio;
+  final AuthenticatedDioClient authenticatedDioClient;
 
-  UserRemoteDataSourceImpl({required this.dio});
+  UserRemoteDataSourceImpl({
+    required this.dio,
+    required this.authenticatedDioClient,
+  });
 
   @override
   Future<LoginUserModel> loginUser(
@@ -39,23 +43,37 @@ class UserRemoteDataSourceImpl implements UserRemoteDataSource {
 
       return LoginUserModel.fromJson(json: response.data);
     } on DioException catch (e) {
-      if (e.response != null) {
-        throw ServerFailure(
-            errorMessage: e.response?.data['message'] ?? "",
-            statusCode: e.response?.statusCode);
-      } else {
-        throw ServerException();
+      // something went wrong with the request
+      final response = e.response?.data;
+      if (response != null && response['fieldErrors'] != null) {
+        //there was a validation error
+        throw ValidationFailure(
+          fieldErrors: (response['fieldErrors'] as Map<String, dynamic>).map(
+            (key, value) => MapEntry(
+              key,
+              (value as List).map((e) => e.toString()).toList(),
+            ),
+          ),
+          errorMessage: response['message']?.toString() ?? '',
+        );
       }
+      // the request did not go through
+      throw ServerFailure(
+        errorMessage:
+            response?['message']?.toString() ?? 'Network error occurred',
+        statusCode: e.response?.statusCode,
+      );
     } catch (e) {
-      throw ServerException();
+      //something else went wrong
+      throw ServerFailure(errorMessage: "Unknown error occurred");
     }
   }
 
   @override
   Future<UserModel> getUser() async {
     try {
-      final client = AuthenticatedDioClient().client;
-      final response = await client.get('$kBackendUrl/user/protected');
+      final client = authenticatedDioClient.client;
+      final response = await client.get('$kBackendUrl/user');
 
       if (response.statusCode == 200) {
         return UserModel.fromJson(json: response.data);

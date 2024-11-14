@@ -1,3 +1,4 @@
+import 'package:app/core/errors/failure.dart';
 import 'package:app/features/user/presentation/providers/user_provider.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
@@ -15,8 +16,9 @@ class _LoginScreenState extends State<LoginScreen> {
 
   @override
   Widget build(BuildContext context) {
-    String? errorMessage =
-        Provider.of<UserProvider>(context, listen: true).failure?.errorMessage;
+    Failure? failure = Provider.of<UserProvider>(context, listen: true).failure;
+    ValidationFailure? validationFailure =
+        failure is ValidationFailure ? failure : null;
 
     return Scaffold(
       appBar: AppBar(
@@ -27,29 +29,47 @@ class _LoginScreenState extends State<LoginScreen> {
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            TextField(
-              decoration: const InputDecoration(
-                labelText: 'Email',
-                border: OutlineInputBorder(),
-              ),
-              onChanged: (value) {
-                setState(() {
-                  _email = value;
-                });
-              },
+            Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                TextField(
+                  decoration: const InputDecoration(
+                    labelText: 'Email',
+                    border: OutlineInputBorder(),
+                  ),
+                  onChanged: (value) {
+                    setState(() {
+                      _email = value;
+                    });
+                  },
+                ),
+                if (validationFailure?.fieldErrors["email"] != null)
+                  Text(
+                      style: const TextStyle(color: Colors.red),
+                      validationFailure?.fieldErrors["email"]?[0] ?? ''),
+              ],
             ),
             const SizedBox(height: 16),
-            TextField(
-              decoration: const InputDecoration(
-                labelText: 'Password',
-                border: OutlineInputBorder(),
-              ),
-              obscureText: true,
-              onChanged: (value) {
-                setState(() {
-                  _password = value;
-                });
-              },
+            Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                TextField(
+                  decoration: const InputDecoration(
+                    labelText: 'Password',
+                    border: OutlineInputBorder(),
+                  ),
+                  obscureText: true,
+                  onChanged: (value) {
+                    setState(() {
+                      _password = value;
+                    });
+                  },
+                ),
+                if (validationFailure?.fieldErrors["password"] != null)
+                  Text(
+                      style: const TextStyle(color: Colors.red),
+                      validationFailure?.fieldErrors["password"]?[0] ?? ''),
+              ],
             ),
             const SizedBox(height: 24),
             ElevatedButton(
@@ -59,7 +79,7 @@ class _LoginScreenState extends State<LoginScreen> {
               },
               child: const Text('Login'),
             ),
-            if (errorMessage != null) Text(errorMessage),
+            if (failure != null) Text(failure.errorMessage),
           ],
         ),
       ),
