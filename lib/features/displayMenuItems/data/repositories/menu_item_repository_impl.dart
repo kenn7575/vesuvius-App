@@ -2,7 +2,6 @@ import 'package:app/core/params/params.dart';
 import 'package:app/features/displayMenuItems/business/repositories/menu_item_repositroy.dart';
 import 'package:app/features/displayMenuItems/data/models/menu_item_models.dart';
 import 'package:dartz/dartz.dart';
-import 'package:flutter/material.dart';
 
 import '../../../../../core/connection/network_info.dart';
 import '../../../../../core/errors/exceptions.dart';
@@ -19,7 +18,8 @@ class MenuItemRepositoryImpl implements MenuItemRepository {
   });
 
   @override
-  Future<Either<Failure, List<MenuItemModel>>> getMenuItem({required MenuItemsParams params}) async {
+  Future<Either<Failure, List<MenuItemModel>>> getMenuItem(
+      {required MenuItemsParams params}) async {
     if (await networkInfo.isConnected!) {
       try {
         List<MenuItemModel> remoteMenuItem =

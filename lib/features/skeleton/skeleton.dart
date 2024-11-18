@@ -2,7 +2,6 @@ import 'package:app/features/displayMenuItems/presentation/pages/menu_item_type_
 import 'package:app/features/new_order/presentation/pages/new_order_page.dart';
 import 'package:app/features/user/presentation/providers/user_provider.dart';
 import 'package:flutter/material.dart';
-import '../pokemon/presentation/pages/data_page.dart';
 import '../pokemon/presentation/pages/pokemon_page.dart';
 import 'package:provider/provider.dart';
 import 'widgets/custom_bottom_bar_widget.dart';
