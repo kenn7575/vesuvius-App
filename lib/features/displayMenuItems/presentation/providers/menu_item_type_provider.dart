@@ -14,15 +14,25 @@ import '../../data/datasources/menu_item_type_remote_data_source.dart';
 import '../../data/repositories/menu_item_type_repository_impl.dart';
 
 class MenuItemTypesProvider extends ChangeNotifier {
-  List<MenuItemEntity>? menuItem;
+  List<MenuItemEntity>? menuItems;
   List<MenuItemTypeEntity>? menuItemTypes;
   int? selectedTypeId;
+  String? selectedTypeName;
   Failure? failure;
 
   MenuItemTypesProvider({
     this.menuItemTypes,
     this.failure,
   });
+
+  void setSelectedType({required int typeId, String? typeName}) {
+    selectedTypeId = typeId;
+    if (typeName != null) {
+      selectedTypeName = typeName;
+    }
+    notifyListeners();
+  }
+
   // create repository
   void getMenuItemTypes() async {
     MenuItemTypeRepositoryImpl repository = MenuItemTypeRepositoryImpl(
@@ -52,7 +62,8 @@ class MenuItemTypesProvider extends ChangeNotifier {
       },
     );
   }
-  void getMenuItem({required int itemId}) async {
+
+  void getMenuItems({required int typeId}) async {
     MenuItemRepositoryImpl repository = MenuItemRepositoryImpl(
       remoteDataSource: MenuItemRemoteDataSourceImpl(
         dio: Dio(),
@@ -62,20 +73,19 @@ class MenuItemTypesProvider extends ChangeNotifier {
       ),
     );
 
-   
     // call usecase that has repository as parameter
-    final failureOrMenuItem =
-        await GetMenuItem(menuItemRepository: repository).call(params: MenuItemsParams(itemId: itemId));
+    final failureOrMenuItem = await GetMenuItem(menuItemRepository: repository)
+        .call(params: GetMenuItemsParams(typeId));
 
     failureOrMenuItem.fold(
       (Failure newFailure) {
-        menuItem = null;
+        menuItems = null;
         failure = newFailure;
         notifyListeners();
       },
       // if success, set the menuItem and notify listeners
       (List<MenuItemEntity> newMenuItem) {
-        menuItem = newMenuItem;
+        menuItems = newMenuItem;
         failure = null;
         notifyListeners();
       },

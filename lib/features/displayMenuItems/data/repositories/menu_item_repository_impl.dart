@@ -19,11 +19,11 @@ class MenuItemRepositoryImpl implements MenuItemRepository {
 
   @override
   Future<Either<Failure, List<MenuItemModel>>> getMenuItem(
-      {required MenuItemsParams params}) async {
+      {required GetMenuItemsParams params}) async {
     if (await networkInfo.isConnected!) {
       try {
         List<MenuItemModel> remoteMenuItem =
-            await remoteDataSource.getMenuItem(params: params);
+            await remoteDataSource.getMenuItems(params: params);
 
         return Right(remoteMenuItem);
       } on ServerException {

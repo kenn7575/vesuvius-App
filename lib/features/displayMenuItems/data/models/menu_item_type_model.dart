@@ -6,6 +6,7 @@ class MenuItemTypeModel extends MenuItemTypeEntity {
     required super.name,
     required super.createdAt,
     required super.updatedAt,
+    required super.isFood,
   });
 
   factory MenuItemTypeModel.fromJson({required Map<String, dynamic> json}) {
@@ -14,6 +15,7 @@ class MenuItemTypeModel extends MenuItemTypeEntity {
       name: json[kName],
       createdAt: DateTime.parse(json[kCreatedAt]),
       updatedAt: DateTime.parse(json[kUpdatedAt]),
+      isFood: json[kIsFood],
     );
   }
 
@@ -29,6 +31,7 @@ class MenuItemTypeModel extends MenuItemTypeEntity {
       kName: name,
       kCreatedAt: createdAt.toIso8601String(),
       kUpdatedAt: updatedAt.toIso8601String(),
+      kIsFood: isFood,
     };
   }
 
@@ -42,3 +45,4 @@ const String kId = 'id';
 const String kName = 'name';
 const String kCreatedAt = 'created_at';
 const String kUpdatedAt = 'updated_at';
+const String kIsFood = 'is_food';

@@ -34,9 +34,39 @@ class IsTokenExpiredParams {
   });
 }
 
-class MenuItemsParams{
-  final int itemId;
-  const MenuItemsParams({
-    required this.itemId,
+class GetMenuItemsParams {
+  final int typeId;
+  const GetMenuItemsParams(
+    this.typeId,
+  );
+}
+
+//classes for creating new order with table and menu items
+class CreateOrderParams {
+  int? waiterId;
+  final List<CreateOrderItemParams> menuItems;
+  final List<CreateOrderTableParams> tables;
+  CreateOrderParams({
+    this.waiterId,
+    required this.menuItems,
+    required this.tables,
+  });
+}
+
+class CreateOrderItemParams {
+  int menuItemId;
+  int count;
+  String? comment;
+  CreateOrderItemParams({
+    required this.menuItemId,
+    required this.count,
+    this.comment,
+  });
+}
+
+class CreateOrderTableParams {
+  final int tableId;
+  const CreateOrderTableParams({
+    required this.tableId,
   });
 }

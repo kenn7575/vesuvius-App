@@ -4,13 +4,13 @@ import 'package:app/features/displayMenuItems/business/repositories/menu_item_re
 import 'package:dartz/dartz.dart';
 import '../../../../../core/errors/failure.dart';
 
-
 class GetMenuItem {
   final MenuItemRepository menuItemRepository;
 
   GetMenuItem({required this.menuItemRepository});
 
-  Future<Either<Failure, List<MenuItemEntity>>> call({required MenuItemsParams params}) async {
+  Future<Either<Failure, List<MenuItemEntity>>> call(
+      {required GetMenuItemsParams params}) async {
     return await menuItemRepository.getMenuItem(params: params);
   }
 }
