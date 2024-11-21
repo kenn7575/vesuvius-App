@@ -1,17 +1,27 @@
-# app
+## Route Structure
 
-A new Flutter project.
+This section describes the route structure used in the application, defined with `GoRouter`.
 
-## Getting Started
+### Main Routes
 
-This project is a starting point for a Flutter application.
+- `/` - **Default Page (Reservation Page for Now)**
+- `/order` - **Waiter Ordering Page**
+  - `/order/table` - **Waiter Table Selection Page**
+  - `/order/itemTypes` - **Waiter Item Category Selection Page**
+    - `/order/itemTypes/menuItems` - **Waiter Menu Item Selection Page**
+  - `/order/overview` - **Waiter Order Overview Page**
+  - `/order/confirmation` - **Waiter Order Confirmation Page**
+- `/kitchen` - **Kitchen Page for Displaying Orders**
 
-A few resources to get you started if this is your first Flutter project:
+### Overview
 
-- [Lab: Write your first Flutter app](https://docs.flutter.dev/get-started/codelab)
-- [Cookbook: Useful Flutter samples](https://docs.flutter.dev/cookbook)
-
-For help getting started with Flutter development, view the
-[online documentation](https://docs.flutter.dev/), which offers tutorials,
-samples, guidance on mobile development, and a full API reference.
-# App
+| Route                        | Description                                 |
+|------------------------------|---------------------------------------------|
+| `/`                          | Default Page (Reservation Page)             |
+| `/order`                     | Waiter Ordering Page                        |
+| `/order/table`               | Waiter Table Selection Page                 |
+| `/order/overview`            | Waiter Order Overview Page                  |
+| `/order/confirmation`        | Waiter Order Confirmation Page              |
+| `/order/itemTypes`           | Waiter Item Category Selection Page         |
+| `/order/itemTypes/menuItems` | Waiter Menu Item Selection Page             |
+| `/kitchen`                   | Kitchen Page for Displaying Orders          |

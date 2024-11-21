@@ -1,5 +1,7 @@
 import 'package:app/data_theme.dart';
 import 'package:app/features/displayMenuItems/presentation/providers/menu_item_type_provider.dart';
+import 'package:app/features/select_table_for_order/presentation/providers/reservation_provider.dart';
+import 'package:app/features/skeleton/widgets/route_config.dart';
 import 'package:app/features/user/presentation/pages/login_page.dart';
 import 'package:app/features/user/presentation/providers/user_provider.dart';
 import 'package:flutter/material.dart';
@@ -7,7 +9,6 @@ import 'package:provider/provider.dart';
 import 'features/pokemon/presentation/providers/pokemon_provider.dart';
 import 'features/pokemon/presentation/providers/selected_pokemon_item_provider.dart';
 import 'features/skeleton/providers/selected_page_provider.dart';
-import 'features/skeleton/skeleton.dart';
 
 void main() {
   runApp(const MyApp());
@@ -35,13 +36,11 @@ class MyApp extends StatelessWidget {
         ChangeNotifierProvider(
           create: (context) => MenuItemTypesProvider(),
         ),
+        ChangeNotifierProvider(
+          create: (context) => ReservationProvider(),
+        ),
       ],
-      child: MaterialApp(
-        theme: CustomTheme.lightTheme,
-        debugShowCheckedModeBanner: false,
-        title: 'Café Vesuvius',
-        home: const Home(),
-      ),
+      child: const Home(),
     );
   }
 }
@@ -55,24 +54,26 @@ class Home extends StatefulWidget {
 
 class _HomeState extends State<Home> {
   @override
-  void initState() {
-    SelectedPokemonItemProvider selectedPokemonItem =
-        Provider.of<SelectedPokemonItemProvider>(context, listen: false);
-
-    Provider.of<PokemonProvider>(context, listen: false).eitherFailureOrPokemon(
-      value: (selectedPokemonItem.number + 1).toString(),
-    );
-
-    super.initState();
-  }
-
-  @override
   Widget build(BuildContext context) {
     // login logic
     if (Provider.of<UserProvider>(context, listen: true).user == null) {
       return const LoginPage();
     } else {
-      return const Skeleton();
+      return const MainApp();
     }
+  }
+}
+
+class MainApp extends StatelessWidget {
+  const MainApp({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    return MaterialApp.router(
+      theme: CustomTheme.lightTheme,
+      debugShowCheckedModeBanner: false,
+      title: 'Café Vesuvius',
+      routerConfig: routerConfig,
+    );
   }
 }

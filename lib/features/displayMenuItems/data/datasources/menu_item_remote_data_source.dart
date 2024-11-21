@@ -6,20 +6,21 @@ import 'package:dio/dio.dart';
 import '../../../../../core/errors/exceptions.dart';
 
 abstract class MenuItemRemoteDataSource {
-  Future<List<MenuItemModel>> getMenuItem({required MenuItemsParams params});
+  Future<List<MenuItemModel>> getMenuItems(
+      {required GetMenuItemsParams params});
 }
 
-class MenuItemRemoteDataSourceImpl
-    implements MenuItemRemoteDataSource {
+class MenuItemRemoteDataSourceImpl implements MenuItemRemoteDataSource {
   final Dio dio;
 
   MenuItemRemoteDataSourceImpl({required this.dio});
 
   @override
-  Future<List<MenuItemModel>> getMenuItem({required MenuItemsParams params}) async {
+  Future<List<MenuItemModel>> getMenuItems(
+      {required GetMenuItemsParams params}) async {
     try {
       final response = await dio.get(
-        '$kBackendUrl/menu_items?item_type_id=${params.itemId}',
+        '$kBackendUrl/menu_items?item_type_id=${params.typeId}',
       );
 
       return MenuItemModel.fromJsonList(response.data);

@@ -1,14 +1,14 @@
 import 'package:flutter/material.dart';
 
 class SelectedPageProvider extends ChangeNotifier {
-  int selectedPage;
+  String selectedPage;
 
   SelectedPageProvider({
-    this.selectedPage = 0,
+    this.selectedPage = "/",
   });
 
-  void changePage(int newValue) {
-    selectedPage = newValue;
+  void changePage(String newPage) {
+    selectedPage = newPage;
     notifyListeners();
   }
 }
