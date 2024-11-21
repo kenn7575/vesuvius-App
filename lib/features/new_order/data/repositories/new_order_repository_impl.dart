@@ -1,46 +1,36 @@
+import 'package:app/features/new_order/data/models/order_model.dart';
 import 'package:dartz/dartz.dart';
-
-import '../../../../../core/connection/network_info.dart';
-import '../../../../../core/errors/exceptions.dart';
-import '../../../../../core/errors/failure.dart';
-import '../../../../../core/params/params.dart';
+import 'package:app/core/connection/network_info.dart';
+import 'package:app/core/errors/exceptions.dart';
+import 'package:app/core/errors/failure.dart';
+import 'package:app/core/params/params.dart';
 import '../../business/repositories/new_order_repository.dart';
-import '../datasources/new_order_local_data_source.dart';
 import '../datasources/new_order_remote_data_source.dart';
-import '../models/new_order_model.dart';
 
-class TemplateRepositoryImpl implements TemplateRepository {
-  final TemplateRemoteDataSource remoteDataSource;
-  final TemplateLocalDataSource localDataSource;
+class NewOrderRepositoryImpl implements NewOrderRepository {
+  final OrderRemoteDataSource remoteDataSource;
   final NetworkInfo networkInfo;
 
-  TemplateRepositoryImpl({
+  NewOrderRepositoryImpl({
     required this.remoteDataSource,
-    required this.localDataSource,
     required this.networkInfo,
   });
 
   @override
-  Future<Either<Failure, TemplateModel>> getTemplate(
-      {required TemplateParams templateParams}) async {
+  Future<Either<Failure, OrderModel>> createNewOrder(
+      {required CreateOrderParams createOrderParams}) async {
     if (await networkInfo.isConnected!) {
       try {
-        TemplateModel remoteTemplate =
-            await remoteDataSource.getTemplate(templateParams: templateParams);
+        OrderModel createdOrder = await remoteDataSource.createNewOrder(
+            createOrderParams: createOrderParams);
 
-        localDataSource.cacheTemplate(templateToCache: remoteTemplate);
-
-        return Right(remoteTemplate);
+        return Right(createdOrder);
       } on ServerException {
         return Left(ServerFailure(errorMessage: 'This is a server exception'));
       }
     } else {
-      try {
-        TemplateModel localTemplate = await localDataSource.getLastTemplate();
-        return Right(localTemplate);
-      } on CacheException {
-        return Left(CacheFailure(errorMessage: 'This is a cache exception'));
-      }
+      // no internet
+      return Left(CacheFailure(errorMessage: 'No internet connection.'));
     }
   }
 }

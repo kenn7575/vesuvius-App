@@ -1,57 +1,55 @@
+import 'package:app/features/new_order/business/entities/order_entiry.dart';
 import 'package:data_connection_checker_tv/data_connection_checker.dart';
-
 import 'package:dio/dio.dart';
-
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
-
-import '../../../../../core/connection/network_info.dart';
-import '../../../../../core/errors/failure.dart';
-import '../../../../../core/params/params.dart';
-import '../../business/entities/new_order_entity.dart';
-import '../../business/usecases/create_new_order.dart';
-import '../../data/datasources/new_order_local_data_source.dart';
-import '../../data/datasources/new_order_remote_data_source.dart';
-import '../../data/repositories/new_order_repository_impl.dart';
+import 'package:app/core/connection/network_info.dart';
+import 'package:app/core/errors/failure.dart';
+import 'package:app/core/params/params.dart';
 
 class TemplateProvider extends ChangeNotifier {
-  TemplateEntity? template;
-  Failure? failure;
+  CreateOrderParams?
+      createOrderParams; // This is the state that will be used to create a new order
+  OrderEntity?
+      orderEntity; // after creating a new order, this state will be updated with the new order
+  Failure? failure; // This will be used to display errors
 
   TemplateProvider({
-    this.template,
+    this.createOrderParams,
+    this.orderEntity,
     this.failure,
-  });
+  }) {
+    createOrderParams = CreateOrderParams(menuItems: [], tables: []);
+  }
 
-  void eitherFailureOrTemplate() async {
-    TemplateRepositoryImpl repository = TemplateRepositoryImpl(
-      remoteDataSource: TemplateRemoteDataSourceImpl(
-        dio: Dio(),
-      ),
-      localDataSource: TemplateLocalDataSourceImpl(
-        sharedPreferences: await SharedPreferences.getInstance(),
-      ),
-      networkInfo: NetworkInfoImpl(
-        DataConnectionChecker(),
-      ),
-    );
+  void addMenuItemToOrder(CreateOrderItemParams createOrderItemParams) {
+    createOrderParams?.menuItems.add(createOrderItemParams);
+    notifyListeners();
+  }
 
-    final failureOrTemplate =
-        await GetTemplate(templateRepository: repository).call(
-      templateParams: TemplateParams(),
-    );
+  void removeMenuItemFromOrder(CreateOrderItemParams createOrderItemParams) {
+    createOrderParams?.menuItems.remove(createOrderItemParams);
+    notifyListeners();
+  }
 
-    failureOrTemplate.fold(
-      (Failure newFailure) {
-        template = null;
-        failure = newFailure;
-        notifyListeners();
-      },
-      (TemplateEntity newTemplate) {
-        template = newTemplate;
-        failure = null;
-        notifyListeners();
-      },
-    );
+  void subtractQuantity(CreateOrderItemParams createOrderItemParams) {
+    createOrderParams?.menuItems
+        .firstWhere((element) => element == createOrderItemParams)
+        .count--;
+    notifyListeners();
+  }
+
+  void addQuantity(CreateOrderItemParams createOrderItemParams) {
+    createOrderParams?.menuItems
+        .firstWhere((element) => element == createOrderItemParams)
+        .count++;
+    notifyListeners();
+  }
+
+  void commentOnOrderItem(CreateOrderItemParams createOrderItemParams) {
+    createOrderParams?.menuItems
+        .firstWhere((element) => element == createOrderItemParams)
+        .comment = createOrderItemParams.comment;
+    notifyListeners();
   }
 }

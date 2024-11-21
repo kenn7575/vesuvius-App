@@ -1,10 +1,11 @@
+import 'package:app/features/new_order/business/entities/order_entiry.dart';
 import 'package:dartz/dartz.dart';
 import '../../../../../core/errors/failure.dart';
 import '../../../../../core/params/params.dart';
-import '../entities/new_order_entity.dart';
+import '../entities/order_item_entity.dart';
 
-abstract class TemplateRepository {
-  Future<Either<Failure, TemplateEntity>> getTemplate({
-    required TemplateParams templateParams,
+abstract class NewOrderRepository {
+  Future<Either<Failure, OrderEntity>> createNewOrder({
+    required CreateOrderParams createOrderParams,
   });
 }
