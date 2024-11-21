@@ -1,9 +1,9 @@
 import 'package:app/features/displayMenuItems/presentation/pages/menu_item_page.dart';
 import 'package:app/features/displayMenuItems/presentation/pages/menu_item_type_page.dart';
-import 'package:app/features/new_order/presentation/pages/orders_page.dart';
-import 'package:app/features/new_order/presentation/pages/reservation_page.dart';
+import 'package:app/features/order/presentation/pages/orders_page.dart';
+import 'package:app/features/order/presentation/pages/reservation_page.dart';
 import 'package:app/features/select_table_for_order/presentation/pages/select_table_page.dart';
-import 'package:app/features/new_order/presentation/widgets/cart_sheet.dart';
+import 'package:app/features/order/presentation/widgets/cart_sheet.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 

@@ -1,4 +1,4 @@
-import 'package:app/features/new_order/data/models/order_table_model.dart';
+import 'package:app/features/order/data/models/order_table_model.dart';
 import 'package:app/features/select_table_for_order/business/entities/reservation_entity.dart';
 
 class ReservationModel extends ReservationEntity {

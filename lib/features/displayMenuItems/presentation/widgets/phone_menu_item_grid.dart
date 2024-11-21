@@ -3,7 +3,7 @@ import "package:app/core/params/params.dart";
 import "package:app/features/displayMenuItems/business/entities/menu_item_entity.dart";
 import "package:app/features/displayMenuItems/business/entities/menu_item_types_entity.dart";
 import "package:app/features/displayMenuItems/presentation/providers/menu_item_type_provider.dart";
-import "package:app/features/new_order/presentation/widgets/menu_item_card.dart";
+import "package:app/features/order/presentation/widgets/menu_item_card.dart";
 
 import "package:flutter/material.dart";
 import "package:provider/provider.dart";

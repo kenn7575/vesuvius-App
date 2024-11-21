@@ -4,8 +4,8 @@ import "package:app/features/displayMenuItems/business/entities/menu_item_types_
 import "package:app/features/displayMenuItems/presentation/pages/menu_item_page.dart";
 import "package:app/features/displayMenuItems/presentation/providers/menu_item_type_provider.dart";
 import "package:app/features/displayMenuItems/presentation/widgets/phone_menu_item_grid.dart";
-import "package:app/features/new_order/presentation/widgets/menu_item_card.dart";
-import "package:app/features/new_order/presentation/widgets/phone_order_grid.dart";
+import "package:app/features/order/presentation/widgets/menu_item_card.dart";
+import "package:app/features/order/presentation/widgets/phone_order_grid.dart";
 
 import "package:flutter/material.dart";
 import "package:go_router/go_router.dart";
