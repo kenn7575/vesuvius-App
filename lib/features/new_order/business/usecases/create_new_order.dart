@@ -1,11 +1,11 @@
 import 'package:app/features/new_order/business/entities/order_entiry.dart';
+import 'package:app/features/new_order/business/repositories/order_repository.dart';
 import 'package:dartz/dartz.dart';
 import '../../../../../core/errors/failure.dart';
 import '../../../../../core/params/params.dart';
-import '../repositories/new_order_repository.dart';
 
 class CreateNewOrder {
-  final NewOrderRepository newOrderRepository;
+  final OrderRepository newOrderRepository;
 
   CreateNewOrder({required this.newOrderRepository});
 

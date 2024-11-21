@@ -4,7 +4,7 @@ import '../../../../../core/errors/failure.dart';
 import '../../../../../core/params/params.dart';
 import '../entities/order_item_entity.dart';
 
-abstract class NewOrderRepository {
+abstract class OrderRepository {
   Future<Either<Failure, OrderEntity>> createNewOrder({
     required CreateOrderParams createOrderParams,
   });
