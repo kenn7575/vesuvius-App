@@ -1,5 +1,5 @@
-import 'package:app/features/new_order/business/repositories/order_repository.dart';
-import 'package:app/features/new_order/data/models/order_model.dart';
+import 'package:app/features/order/business/repositories/order_repository.dart';
+import 'package:app/features/order/data/models/order_model.dart';
 import 'package:dartz/dartz.dart';
 import 'package:app/core/connection/network_info.dart';
 import 'package:app/core/errors/exceptions.dart';

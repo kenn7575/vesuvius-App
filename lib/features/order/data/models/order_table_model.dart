@@ -5,7 +5,7 @@
 //   final DateTime createdAt;
 //   final DateTime updatedAt;
 
-import 'package:app/features/new_order/business/entities/order_table_entity.dart';
+import 'package:app/features/order/business/entities/order_table_entity.dart';
 
 class OrderTableModel extends OrderTableEntity {
   const OrderTableModel({

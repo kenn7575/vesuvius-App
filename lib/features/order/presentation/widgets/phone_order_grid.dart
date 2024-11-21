@@ -1,4 +1,4 @@
-import "package:app/features/new_order/presentation/widgets/menu_item_card.dart";
+import "package:app/features/order/presentation/widgets/menu_item_card.dart";
 import "package:flutter/material.dart";
 
 class PhoneOrderGrid extends StatelessWidget {

@@ -1,4 +1,4 @@
-import 'package:app/features/new_order/business/entities/order_entiry.dart';
+import 'package:app/features/order/business/entities/order_entiry.dart';
 import 'package:data_connection_checker_tv/data_connection_checker.dart';
 import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';

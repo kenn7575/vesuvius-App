@@ -1,6 +1,6 @@
-import 'package:app/features/new_order/business/entities/order_entiry.dart';
-import 'package:app/features/new_order/data/models/order_item_model.dart';
-import 'package:app/features/new_order/data/models/order_table_model.dart';
+import 'package:app/features/order/business/entities/order_entiry.dart';
+import 'package:app/features/order/data/models/order_item_model.dart';
+import 'package:app/features/order/data/models/order_table_model.dart';
 
 class OrderModel extends OrderEntity {
   const OrderModel({

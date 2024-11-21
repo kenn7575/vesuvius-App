@@ -1,4 +1,4 @@
-import 'package:app/features/new_order/presentation/widgets/phone_order_grid.dart';
+import 'package:app/features/order/presentation/widgets/phone_order_grid.dart';
 import 'package:flutter/material.dart';
 
 class NewOrderPage extends StatelessWidget {
