@@ -3,14 +3,14 @@ import 'package:app/features/select_table_for_order/presentation/providers/reser
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
-class SelectTablePage extends StatefulWidget {
-  const SelectTablePage({super.key});
+class SelectReservationPage extends StatefulWidget {
+  const SelectReservationPage({super.key});
 
   @override
-  State<SelectTablePage> createState() => _SelectTablePageState();
+  State<SelectReservationPage> createState() => _SelectReservationPageState();
 }
 
-class _SelectTablePageState extends State<SelectTablePage> {
+class _SelectReservationPageState extends State<SelectReservationPage> {
   @override
   void initState() {
     Provider.of<ReservationProvider>(context, listen: false)
@@ -26,8 +26,11 @@ class _SelectTablePageState extends State<SelectTablePage> {
 
     // Widget layout = screenSize > phoneWidth ? :
     return Scaffold(
-        body: reservations != null
-            ? Center(child: Text(reservations[0].customerPhoneNumber))
-            : const Center(child: Text("No reservations found")));
+      body: reservations != null && reservations.isNotEmpty
+          ? Center(child: Text(reservations[0].customerPhoneNumber))
+          : const Center(
+              child: Text("No reservations found"),
+            ),
+    );
   }
 }

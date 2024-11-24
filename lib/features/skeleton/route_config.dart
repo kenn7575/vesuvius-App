@@ -1,9 +1,10 @@
 import 'package:app/features/displayMenuItems/presentation/pages/menu_item_page.dart';
 import 'package:app/features/displayMenuItems/presentation/pages/menu_item_type_page.dart';
 import 'package:app/features/order/presentation/pages/orders_page.dart';
-import 'package:app/features/order/presentation/pages/reservation_page.dart';
-import 'package:app/features/select_table_for_order/presentation/pages/select_table_page.dart';
+import 'package:app/features/select_table_for_order/presentation/pages/select_tables_page.dart';
+import 'package:app/features/select_table_for_order/presentation/pages/select_reservation_page.dart';
 import 'package:app/features/order/presentation/widgets/cart_sheet.dart';
+import 'package:app/features/skeleton/widgets/tab_view.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 
@@ -57,7 +58,7 @@ final GoRouter routerConfig = GoRouter(
             GoRoute(
               path: '/', // Reservation page
               builder: (BuildContext context, GoRouterState state) {
-                return const ReservationPage();
+                return const Center(child: Text("Reservations"));
               },
             ),
           ],
@@ -67,7 +68,7 @@ final GoRouter routerConfig = GoRouter(
             GoRoute(
               path: '/kitchen', // Kitchen page
               builder: (BuildContext context, GoRouterState state) {
-                return const Text("kitchen");
+                return const Center(child: Text("kitchen"));
               },
             ),
           ],
@@ -81,10 +82,42 @@ final GoRouter routerConfig = GoRouter(
       },
       routes: <RouteBase>[
         GoRoute(
-          path: "/table", // waiter table selection page
-          builder: (BuildContext context, GoRouterState state) {
-            return const SelectTablePage();
-          },
+          path: '/table',
+          pageBuilder: (context, state) => CustomTransitionPage(
+            child: const LocationTabBarPage(
+              currentIndex: 0,
+              child: SelectTablesPage(), // Your existing SelectTablePage
+            ),
+            transitionsBuilder:
+                (context, animation, secondaryAnimation, child) {
+              return SlideTransition(
+                position: Tween<Offset>(
+                  begin: const Offset(1.0, 0.0),
+                  end: Offset.zero,
+                ).animate(animation),
+                child: child,
+              );
+            },
+          ),
+        ),
+        GoRoute(
+          path: '/reservation',
+          pageBuilder: (context, state) => CustomTransitionPage(
+            child: const LocationTabBarPage(
+              currentIndex: 1,
+              child: SelectReservationPage(), // Your existing ReservationPage
+            ),
+            transitionsBuilder:
+                (context, animation, secondaryAnimation, child) {
+              return SlideTransition(
+                position: Tween<Offset>(
+                  begin: const Offset(1.0, 0.0),
+                  end: Offset.zero,
+                ).animate(animation),
+                child: child,
+              );
+            },
+          ),
         ),
         GoRoute(
           path: "/overview",
@@ -131,37 +164,10 @@ final GoRouter routerConfig = GoRouter(
       ],
     ),
     GoRoute(
-        path: "/", // the layout for pages that should share a nav bar
-        builder: (
-          BuildContext context,
-          GoRouterState state,
-        ) {
-          return const ReservationPage(); // default page is the reservation page for now
-        },
-        routes: <RouteBase>[
-          GoRoute(
-            path: "/kitchen", // kitchen page for displaying orders
-            builder: (BuildContext context, GoRouterState state) {
-              return const Text("kitchen");
-            },
-          ),
-        ]),
+      path: "/kitchen", // kitchen page for displaying orders
+      builder: (BuildContext context, GoRouterState state) {
+        return const Text("kitchen");
+      },
+    ),
   ],
 );
-
-// Helper functions for BottomNavigationBar
-int _getCurrentIndex(GoRouterState state) {
-  switch (state.path) {
-    case '/':
-      return 0; // Reservations tab
-    case '/kitchen':
-      return 1; // Kitchen tab
-    default:
-      return 0;
-  }
-}
-
-void _onTabTapped(BuildContext context, int index) {
-  final routes = ['/', '/kitchen'];
-  context.go(routes[index]);
-}

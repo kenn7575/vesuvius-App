@@ -1,7 +1,8 @@
 import 'package:app/data_theme.dart';
 import 'package:app/features/displayMenuItems/presentation/providers/menu_item_type_provider.dart';
 import 'package:app/features/select_table_for_order/presentation/providers/reservation_provider.dart';
-import 'package:app/features/skeleton/widgets/route_config.dart';
+import 'package:app/features/select_table_for_order/presentation/providers/table_provider.dart';
+import 'package:app/features/skeleton/route_config.dart';
 import 'package:app/features/user/presentation/pages/login_page.dart';
 import 'package:app/features/user/presentation/providers/user_provider.dart';
 import 'package:flutter/material.dart';
@@ -38,6 +39,9 @@ class MyApp extends StatelessWidget {
         ),
         ChangeNotifierProvider(
           create: (context) => ReservationProvider(),
+        ),
+        ChangeNotifierProvider(
+          create: (context) => TableProvider(),
         ),
       ],
       child: const Home(),

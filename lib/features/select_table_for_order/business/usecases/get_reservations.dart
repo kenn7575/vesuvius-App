@@ -3,10 +3,10 @@ import 'package:app/features/select_table_for_order/business/entities/reservatio
 import 'package:dartz/dartz.dart';
 import '../repositories/reservation_repository.dart';
 
-class GetTemplate {
+class GetReservations {
   final ReservationRepository reservationRepository;
 
-  GetTemplate.getReservations({required this.reservationRepository});
+  GetReservations.getReservations({required this.reservationRepository});
 
   Future<Either<Failure, List<ReservationEntity>>> call() async {
     return await reservationRepository.getReservations();
