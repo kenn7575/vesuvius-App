@@ -19,7 +19,7 @@ class ReservationProvider extends ChangeNotifier {
 
   void eitherFailureOrReservation() async {
     ReservationRepositoryImpl repository = ReservationRepositoryImpl(
-      remoteDataSource: TemplateRemoteDataSourceImpl(
+      remoteDataSource: ReservationRemoteDataSourceImpl(
         dio: Dio(),
       ),
       networkInfo: NetworkInfoImpl(
@@ -28,7 +28,7 @@ class ReservationProvider extends ChangeNotifier {
     );
 
     final failureOrReservations =
-        await GetTemplate.getReservations(reservationRepository: repository)
+        await GetReservations.getReservations(reservationRepository: repository)
             .call();
 
     failureOrReservations.fold(

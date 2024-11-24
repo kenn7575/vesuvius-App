@@ -23,19 +23,35 @@ class MenuItemTypeRemoteDataSourceImpl implements MenuItemTypeRemoteDataSource {
       return MenuItemTypeModel.fromJsonList(response.data);
     } on DioException catch (e) {
       // something went wrong with the request
-      final response = e.response?.data;
-      if (response != null && response['fieldErrors'] != null) {
-        //there was a validation error
-        throw ValidationFailure(
-          fieldErrors: response['fieldErrors'],
-          errorMessage: response['message']?.toString() ?? '',
-        );
+
+      if (e.response != null) {
+        final message =
+            e.response?.data is Map ? e.response?.data['message'] : null;
+        final fieldErrors =
+            e.response?.data is Map ? e.response?.data['fieldErrors'] : null;
+
+        if (fieldErrors != null) {
+          //there was a validation error
+          throw ValidationFailure(
+            fieldErrors: (fieldErrors as Map<String, dynamic>).map(
+              (key, value) => MapEntry(
+                key,
+                (value as List).map((e) => e.toString()).toList(),
+              ),
+            ),
+            errorMessage: message ?? 'A validation error occurred',
+          );
+        } else {
+          // there was an error message
+          throw ServerFailure(
+            errorMessage: message ?? 'An error occurred',
+            statusCode: e.response?.statusCode,
+          );
+        }
       }
-      // the request did not go through
       throw ServerFailure(
-        errorMessage:
-            response?['message']?.toString() ?? 'Network error occurred',
-        statusCode: e.response?.statusCode,
+        errorMessage: 'An error occurred',
+        statusCode: null,
       );
     } catch (e) {
       //something else went wrong

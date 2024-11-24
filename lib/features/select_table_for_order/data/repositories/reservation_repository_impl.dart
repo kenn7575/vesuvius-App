@@ -1,3 +1,4 @@
+import 'package:app/core/errors/exceptions.dart';
 import 'package:app/features/select_table_for_order/data/models/reservation_model.dart';
 import 'package:dartz/dartz.dart';
 import 'package:app/core/connection/network_info.dart';
@@ -26,6 +27,9 @@ class ReservationRepositoryImpl implements ReservationRepository {
         return Left(e);
       } on ValidationFailure catch (e) {
         return Left(e);
+      } catch (e) {
+        return Left(
+            ServerFailure(statusCode: 500, errorMessage: "An error occured"));
       }
     } else {
       // If there is no internet connection, we will try to get the data from the cache

@@ -8,10 +8,10 @@ abstract class ReservationRemoteDataSource {
   Future<List<ReservationModel>> getReservations();
 }
 
-class TemplateRemoteDataSourceImpl implements ReservationRemoteDataSource {
+class ReservationRemoteDataSourceImpl implements ReservationRemoteDataSource {
   final Dio dio;
 
-  TemplateRemoteDataSourceImpl({required this.dio});
+  ReservationRemoteDataSourceImpl({required this.dio});
 
   @override
   Future<List<ReservationModel>> getReservations() async {
@@ -24,8 +24,10 @@ class TemplateRemoteDataSourceImpl implements ReservationRemoteDataSource {
       return ReservationModel.fromJsonList(response.data);
     } on DioException catch (e) {
       if (e.response != null) {
+        final message =
+            e.response?.data is Map ? e.response?.data['message'] : null;
         throw ServerFailure(
-            errorMessage: e.response?.data['message'] ?? "",
+            errorMessage: message ?? "An error occurred",
             statusCode: e.response?.statusCode);
       } else {
         throw ServerException();

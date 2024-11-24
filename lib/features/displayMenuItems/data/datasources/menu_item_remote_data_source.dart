@@ -25,9 +25,11 @@ class MenuItemRemoteDataSourceImpl implements MenuItemRemoteDataSource {
 
       return MenuItemModel.fromJsonList(response.data);
     } on DioException catch (e) {
+      final message =
+          e.response?.data is Map ? e.response?.data['message'] : null;
       if (e.response != null) {
         throw ServerFailure(
-            errorMessage: e.response?.data['message'] ?? "",
+            errorMessage: message ?? "An error occurred",
             statusCode: e.response?.statusCode);
       } else {
         throw ServerException();

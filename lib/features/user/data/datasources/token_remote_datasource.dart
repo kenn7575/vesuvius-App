@@ -29,8 +29,10 @@ class TokenRemoteDataSourceImpl implements TokenRemoteDataSource {
       return AccessTokenModel.fromJson(json: response.data).accessToken;
     } on DioException catch (e) {
       if (e.response != null) {
+        final message =
+            e.response?.data is Map ? e.response?.data['message'] : null;
         throw ServerFailure(
-            errorMessage: e.response?.data['message'] ?? "",
+            errorMessage: message ?? "An error occurred",
             statusCode: e.response?.statusCode);
       } else {
         throw ServerException();

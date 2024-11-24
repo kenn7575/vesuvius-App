@@ -26,8 +26,10 @@ class MenuItemRepositoryImpl implements MenuItemRepository {
             await remoteDataSource.getMenuItems(params: params);
 
         return Right(remoteMenuItem);
-      } on ServerException {
-        return Left(ServerFailure(errorMessage: 'This is a server exception'));
+      } on ServerFailure catch (e) {
+        return Left(e);
+      } on ValidationFailure catch (e) {
+        return Left(e);
       }
     } else {
       return Left(ServerFailure(errorMessage: 'No internet connection'));
