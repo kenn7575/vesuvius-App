@@ -1,6 +1,5 @@
 import 'package:app/features/displayMenuItems/presentation/widgets/phone_menu_item_type_grid.dart';
 import 'package:flutter/material.dart';
-import 'package:app/features/displayMenuItems/business/entities/menu_item_types_entity.dart';
 import 'package:app/features/displayMenuItems/presentation/providers/menu_item_type_provider.dart';
 
 import 'package:provider/provider.dart';
@@ -21,9 +20,6 @@ class _MenuItemTypesPageState extends State<MenuItemTypesPage> {
 
   @override
   Widget build(BuildContext context) {
-    var screenSize = MediaQuery.of(context).size;
-    int phoneWidth = 1080;
-
     // Widget layout = screenSize > phoneWidth ? :
     return Scaffold(
       appBar: AppBar(

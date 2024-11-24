@@ -1,5 +1,6 @@
 import 'package:app/data_theme.dart';
 import 'package:app/features/displayMenuItems/presentation/providers/menu_item_type_provider.dart';
+import 'package:app/features/order/presentation/providers/new_order_provider.dart';
 import 'package:app/features/select_table_for_order/presentation/providers/reservation_provider.dart';
 import 'package:app/features/select_table_for_order/presentation/providers/table_provider.dart';
 import 'package:app/features/skeleton/route_config.dart';
@@ -43,6 +44,7 @@ class MyApp extends StatelessWidget {
         ChangeNotifierProvider(
           create: (context) => TableProvider(),
         ),
+        ChangeNotifierProvider(create: (context) => OrderProvider()),
       ],
       child: const Home(),
     );

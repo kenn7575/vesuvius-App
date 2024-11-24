@@ -8,16 +8,9 @@ class OrderPage extends StatelessWidget {
   Widget build(BuildContext context) {
     // Widget layout = screenSize > phoneWidth ? :
     return Scaffold(
-      appBar: AppBar(
-        title: const Text("Ordrer"),
-        leading: IconButton(
-          icon: const Icon(Icons.arrow_back),
-          onPressed: () => context.go("/"),
-        ),
-      ),
       body: Center(
         child: MaterialButton(
-          onPressed: () => context.go("/order/table"),
+          onPressed: () => context.go("/orders/table"),
           child: const Text("itemTypes ->"),
         ),
       ),

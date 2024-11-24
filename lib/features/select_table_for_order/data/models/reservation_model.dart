@@ -1,5 +1,6 @@
 import 'package:app/features/order/data/models/order_table_model.dart';
 import 'package:app/features/select_table_for_order/business/entities/reservation_entity.dart';
+import 'package:app/features/select_table_for_order/data/models/reservation_table_model.dart';
 
 class ReservationModel extends ReservationEntity {
   const ReservationModel({
@@ -28,8 +29,10 @@ class ReservationModel extends ReservationEntity {
       time: DateTime.parse(json[kTime]),
       durationInMinutes: json[kDurationInMinutes],
       numberOfPeople: json[kNumberOfPeople],
-      customerName: json['customer_name'],
-      customerPhoneNumber: json['customer_phone_number'],
+      customerName: json[kCustomerName],
+      customerPhoneNumber: json[kSustomerPhoneNumber],
+      reservationTables: ReservationTableModel.fromJsonList(
+          json[kOrderTables]?.cast<Map<String, dynamic>>() ?? []),
     );
   }
   static List<ReservationModel> fromJsonList(List<dynamic> jsonList) {

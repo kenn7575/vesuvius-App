@@ -11,8 +11,6 @@ class MenuItemPage extends StatelessWidget {
   Widget build(BuildContext context) {
     final String? menuItemTymeName =
         Provider.of<MenuItemTypesProvider>(context).selectedTypeName;
-    var screenSize = MediaQuery.of(context).size;
-    int phoneWidth = 1080;
 
     // Widget layout = screenSize > phoneWidth ? :
     return Scaffold(
@@ -22,9 +20,7 @@ class MenuItemPage extends StatelessWidget {
         title: Text(menuItemTymeName ?? 'Menu Items'),
         leading: BackButton(
           onPressed: () {
-            print('Current location: ${GoRouter.of(context).state?.path}');
-            print('Attempting to navigate to: /order/itemTypes');
-            GoRouter.of(context).go('/order/itemTypes');
+            GoRouter.of(context).go('/orders/itemTypes');
           },
         ),
       ),

@@ -1,4 +1,3 @@
-import 'package:app/features/select_table_for_order/business/entities/reservation_entity.dart';
 import 'package:app/features/select_table_for_order/business/entities/table_entiry.dart';
 import 'package:app/features/select_table_for_order/business/usecases/get_tables.dart';
 import 'package:app/features/select_table_for_order/data/datasources/table_remote_data_source.dart';
@@ -12,6 +11,7 @@ import 'package:app/core/errors/failure.dart';
 class TableProvider extends ChangeNotifier {
   List<TableEntity>? tables;
   Failure? failure;
+  final Set<TableEntity> selectedTables = {};
 
   TableProvider({
     this.tables,

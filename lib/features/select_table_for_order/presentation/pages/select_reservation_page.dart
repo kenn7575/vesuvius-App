@@ -1,5 +1,6 @@
 import 'package:app/features/select_table_for_order/business/entities/reservation_entity.dart';
 import 'package:app/features/select_table_for_order/presentation/providers/reservation_provider.dart';
+import 'package:app/features/select_table_for_order/presentation/widgets/select_reservations.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
@@ -21,16 +22,8 @@ class _SelectReservationPageState extends State<SelectReservationPage> {
 
   @override
   Widget build(BuildContext context) {
-    final List<ReservationEntity>? reservations =
-        Provider.of<ReservationProvider>(context).reservations;
-
-    // Widget layout = screenSize > phoneWidth ? :
-    return Scaffold(
-      body: reservations != null && reservations.isNotEmpty
-          ? Center(child: Text(reservations[0].customerPhoneNumber))
-          : const Center(
-              child: Text("No reservations found"),
-            ),
+    return const Scaffold(
+      body: SelectReservation(),
     );
   }
 }

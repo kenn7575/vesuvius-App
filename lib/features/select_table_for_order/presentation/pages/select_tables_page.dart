@@ -1,10 +1,6 @@
-import 'package:app/core/errors/failure.dart';
-import 'package:app/features/select_table_for_order/business/entities/table_entiry.dart';
-import 'package:app/features/select_table_for_order/business/repositories/table_repository.dart';
 import 'package:app/features/select_table_for_order/presentation/providers/table_provider.dart';
-import 'package:app/features/select_table_for_order/presentation/widgets/table_data_table.dart';
+import 'package:app/features/select_table_for_order/presentation/widgets/select_tables.dart';
 import 'package:flutter/material.dart';
-import 'package:go_router/go_router.dart';
 import 'package:provider/provider.dart';
 
 class SelectTablesPage extends StatefulWidget {
@@ -24,6 +20,6 @@ class _SelectTablesPageState extends State<SelectTablesPage> {
 
   @override
   Widget build(BuildContext context) {
-    return const Scaffold(body: DataTableExample());
+    return const Scaffold(body: SelectTables());
   }
 }

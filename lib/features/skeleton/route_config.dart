@@ -11,7 +11,6 @@ import 'package:go_router/go_router.dart';
 final GlobalKey<NavigatorState> _rootNavigatorKey = GlobalKey<NavigatorState>();
 final GlobalKey<NavigatorState> _shellNavigatorKey =
     GlobalKey<NavigatorState>();
-
 final GoRouter routerConfig = GoRouter(
   navigatorKey: _rootNavigatorKey,
   initialLocation: '/',
@@ -23,18 +22,12 @@ final GoRouter routerConfig = GoRouter(
           bottomNavigationBar: BottomNavigationBar(
             currentIndex: navigationShell.currentIndex,
             onTap: (index) {
-              switch (index) {
-                case 0:
-                  context.go('/');
-                  break;
-                case 1:
-                  context.go('/kitchen');
-                  break;
-                case 2:
-                  context.push(
-                      '/order'); // Use push instead of go to navigate outside bottom nav
-                  break;
-              }
+              // Use the navigationShell to handle tab switching
+              navigationShell.goBranch(
+                index,
+                // Don't animate if we're already on the target branch
+                initialLocation: navigationShell.currentIndex == index,
+              );
             },
             items: const [
               BottomNavigationBarItem(
@@ -48,126 +41,123 @@ final GoRouter routerConfig = GoRouter(
         );
       },
       builder: (context, state, child) {
-        return Scaffold(
-          body: child,
-        );
+        return Scaffold(body: child);
       },
       branches: [
+        // First branch - Reservations
         StatefulShellBranch(
           routes: [
             GoRoute(
-              path: '/', // Reservation page
+              path: '/',
               builder: (BuildContext context, GoRouterState state) {
                 return const Center(child: Text("Reservations"));
               },
             ),
           ],
         ),
+        // Second branch - Kitchen
         StatefulShellBranch(
           routes: [
             GoRoute(
-              path: '/kitchen', // Kitchen page
+              path: '/kitchen',
               builder: (BuildContext context, GoRouterState state) {
-                return const Center(child: Text("kitchen"));
+                return const Center(child: Text("Kitchen"));
               },
             ),
           ],
         ),
-      ],
-    ),
-    GoRoute(
-      path: '/order', // view orders and and link to new order page
-      builder: (BuildContext context, GoRouterState state) {
-        return const OrderPage();
-      },
-      routes: <RouteBase>[
-        GoRoute(
-          path: '/table',
-          pageBuilder: (context, state) => CustomTransitionPage(
-            child: const LocationTabBarPage(
-              currentIndex: 0,
-              child: SelectTablesPage(), // Your existing SelectTablePage
-            ),
-            transitionsBuilder:
-                (context, animation, secondaryAnimation, child) {
-              return SlideTransition(
-                position: Tween<Offset>(
-                  begin: const Offset(1.0, 0.0),
-                  end: Offset.zero,
-                ).animate(animation),
-                child: child,
-              );
-            },
-          ),
-        ),
-        GoRoute(
-          path: '/reservation',
-          pageBuilder: (context, state) => CustomTransitionPage(
-            child: const LocationTabBarPage(
-              currentIndex: 1,
-              child: SelectReservationPage(), // Your existing ReservationPage
-            ),
-            transitionsBuilder:
-                (context, animation, secondaryAnimation, child) {
-              return SlideTransition(
-                position: Tween<Offset>(
-                  begin: const Offset(1.0, 0.0),
-                  end: Offset.zero,
-                ).animate(animation),
-                child: child,
-              );
-            },
-          ),
-        ),
-        GoRoute(
-          path: "/overview",
-          builder: (BuildContext context, GoRouterState state) {
-            return const Text("order/overview"); // waiter order overview page
-          },
-        ),
-        GoRoute(
-          path: "/confirmation",
-          builder: (BuildContext context, GoRouterState state) {
-            return const Text(
-                "order/confirmation"); // waiter order confirmation page
-          },
-        ),
-        ShellRoute(
-          navigatorKey: _shellNavigatorKey,
-          builder: (context, state, child) {
-            return Scaffold(
-              body: Stack(
-                children: [
-                  child,
-                  const CartSheet(),
-                ],
-              ),
-            );
-          },
+        // Third branch - Orders
+        StatefulShellBranch(
           routes: [
             GoRoute(
-              path: "/itemTypes", // waiter table selection page
+              path: '/orders',
               builder: (BuildContext context, GoRouterState state) {
-                return const MenuItemTypesPage(); // waiter item category selection page
+                return const OrderPage();
               },
-              routes: <RouteBase>[
+              routes: [
                 GoRoute(
-                  path: "/menuItems",
-                  builder: (BuildContext context, GoRouterState state) {
-                    return const MenuItemPage(); // waiter menu item selection page
+                  path: 'table',
+                  pageBuilder: (context, state) => CustomTransitionPage(
+                    child: const LocationTabBarPage(
+                      currentIndex: 0,
+                      child: SelectTablesPage(),
+                    ),
+                    transitionsBuilder:
+                        (context, animation, secondaryAnimation, child) {
+                      return SlideTransition(
+                        position: Tween<Offset>(
+                          begin: const Offset(1.0, 0.0),
+                          end: Offset.zero,
+                        ).animate(animation),
+                        child: child,
+                      );
+                    },
+                  ),
+                ),
+                GoRoute(
+                  path: 'reservation',
+                  pageBuilder: (context, state) => CustomTransitionPage(
+                    child: const LocationTabBarPage(
+                      currentIndex: 1,
+                      child: SelectReservationPage(),
+                    ),
+                    transitionsBuilder:
+                        (context, animation, secondaryAnimation, child) {
+                      return SlideTransition(
+                        position: Tween<Offset>(
+                          begin: const Offset(1.0, 0.0),
+                          end: Offset.zero,
+                        ).animate(animation),
+                        child: child,
+                      );
+                    },
+                  ),
+                ),
+                ShellRoute(
+                  navigatorKey: _shellNavigatorKey,
+                  builder: (context, state, child) {
+                    return Scaffold(
+                      body: Stack(
+                        children: [
+                          child,
+                          const CartSheet(),
+                        ],
+                      ),
+                    );
                   },
+                  routes: [
+                    GoRoute(
+                      path: 'itemTypes',
+                      builder: (BuildContext context, GoRouterState state) {
+                        return PopScope(
+                          canPop: false,
+                          onPopInvokedWithResult: (didPop, result) {
+                            if (didPop) return;
+
+                            final router = GoRouter.of(context);
+                            if (router.canPop()) {
+                              router.pop();
+                            }
+                          },
+                          child: const MenuItemTypesPage(),
+                        );
+                      },
+                      routes: <RouteBase>[
+                        GoRoute(
+                          path: 'menuItems',
+                          builder: (BuildContext context, GoRouterState state) {
+                            return const MenuItemPage();
+                          },
+                        ),
+                      ],
+                    ),
+                  ],
                 ),
               ],
             ),
           ],
         ),
       ],
-    ),
-    GoRoute(
-      path: "/kitchen", // kitchen page for displaying orders
-      builder: (BuildContext context, GoRouterState state) {
-        return const Text("kitchen");
-      },
     ),
   ],
 );

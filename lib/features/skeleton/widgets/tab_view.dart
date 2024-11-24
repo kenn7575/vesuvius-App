@@ -21,10 +21,10 @@ class LocationTabBarPage extends StatelessWidget {
               onTap: (index) {
                 switch (index) {
                   case 0:
-                    context.go('/order/table');
+                    context.go('/orders/table');
                     break;
                   case 1:
-                    context.go('/order/reservation');
+                    context.go('/orders/reservation');
                     break;
                 }
               },

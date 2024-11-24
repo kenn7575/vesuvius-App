@@ -1,3 +1,5 @@
+import 'package:app/features/select_table_for_order/business/entities/table_entiry.dart';
+
 class NoParams {}
 
 class TemplateParams {}
