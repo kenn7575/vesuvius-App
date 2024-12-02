@@ -1,4 +1,7 @@
+import 'package:app/features/order/presentation/providers/new_order_provider.dart';
+import 'package:app/features/order/presentation/widgets/cart_list.dart';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 
 class CartSheet extends StatefulWidget {
   const CartSheet({super.key});
@@ -11,10 +14,9 @@ class _CartSheetState extends State<CartSheet> {
   final DraggableScrollableController _controller =
       DraggableScrollableController();
 
-  // Snapping positions: 5%, 40%, and 100% height
-  final double snapPositionBottom = 0.15; // Minimized
-  final double snapPositionHalf = 0.4; // Half-expanded
-  final double snapPositionFull = 1.0; // Fully expanded
+  final double snapPositionBottom = 0.15;
+  final double snapPositionHalf = 0.4;
+  final double snapPositionFull = 0.85;
 
   @override
   Widget build(BuildContext context) {
@@ -23,49 +25,77 @@ class _CartSheetState extends State<CartSheet> {
       initialChildSize: snapPositionBottom,
       minChildSize: snapPositionBottom,
       maxChildSize: snapPositionFull,
-      snap: true, // Enable snapping
-      snapSizes: [
-        snapPositionBottom,
-        snapPositionHalf,
-        snapPositionFull
-      ], // Define snap positions
+      snap: true,
+      snapSizes: [snapPositionBottom, snapPositionHalf, snapPositionFull],
       builder: (context, scrollController) {
         return Container(
-          decoration: const BoxDecoration(
-            color: Colors.white,
-            borderRadius: BorderRadius.only(
+          decoration: BoxDecoration(
+            color: Colors.grey[300],
+            borderRadius: const BorderRadius.only(
               topLeft: Radius.circular(20),
               topRight: Radius.circular(20),
             ),
           ),
-          child: ListView(
+          child: CustomScrollView(
             controller: scrollController,
-            children: [
-              SizedBox(
-                height: 20,
-                child: Center(
-                  child: Container(
-                    width: 40,
-                    height: 5,
-                    decoration: BoxDecoration(
-                      color: Colors.grey,
-                      borderRadius: BorderRadius.circular(10),
+            slivers: [
+              SliverToBoxAdapter(
+                child: Column(
+                  mainAxisSize: MainAxisSize.min,
+                  children: [
+                    // Drag Handle
+                    Container(
+                      width: 40,
+                      height: 4,
+                      margin: const EdgeInsets.symmetric(vertical: 12),
+                      decoration: BoxDecoration(
+                        color: Colors.grey[600],
+                        borderRadius: BorderRadius.circular(2),
+                      ),
                     ),
-                  ),
+                    const OrderItemsList(),
+                  ],
                 ),
               ),
-              // Your additional content here
-              const Padding(
-                padding: EdgeInsets.all(8.0),
-                child: Text(
-                  'Drag me up or down!',
-                  style: TextStyle(fontSize: 18),
+              // Order Items List
+              SliverFillRemaining(
+                hasScrollBody: true,
+                fillOverscroll: false,
+                child: Consumer<OrderProvider>(
+                  builder: (context, provider, child) {
+                    if (provider.createOrderParams?.menuItems.isEmpty ?? true) {
+                      return const Center(
+                        child: Text('No items in cart'),
+                      );
+                    }
+
+                    return Column(
+                      children: [
+                        const Spacer(),
+                        Row(
+                          children: [
+                            Expanded(
+                              child: Padding(
+                                padding: const EdgeInsets.all(8.0),
+                                child: ElevatedButton(
+                                  onPressed: () {
+                                    // Handle order submission
+                                  },
+                                  style: ElevatedButton.styleFrom(
+                                    padding: const EdgeInsets.symmetric(
+                                        vertical: 16),
+                                  ),
+                                  child: const Text('Place Order'),
+                                ),
+                              ),
+                            ),
+                          ],
+                        ),
+                      ],
+                    );
+                  },
                 ),
               ),
-              const ListTile(title: Text('Item 1')),
-              const ListTile(title: Text('Item 2')),
-              const ListTile(title: Text('Item 3')),
-              const ListTile(title: Text('Item 4')),
             ],
           ),
         );

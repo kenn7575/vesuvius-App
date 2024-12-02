@@ -42,7 +42,6 @@ class OrderProvider extends ChangeNotifier {
         createOrderParams?.tables.add(cotp);
       });
     }
-    print(selectedTables.length);
 
     notifyListeners();
   }
@@ -51,7 +50,6 @@ class OrderProvider extends ChangeNotifier {
     selectedTables.removeWhere((element) => element.tableId == table.id);
     createOrderParams?.tables
         .removeWhere((element) => element.tableId == table.id);
-    print(selectedTables.toString());
 
     notifyListeners();
   }
@@ -62,27 +60,47 @@ class OrderProvider extends ChangeNotifier {
     notifyListeners();
   }
 
-  void addMenuItemToOrder(CreateOrderItemParams createOrderItemParams) {
-    createOrderParams?.menuItems.add(createOrderItemParams);
+  int addMenuItemToOrder(CreateOrderItemParams createOrderItemParams) {
+    // Check if the item is already in the cart
+    CreateOrderItemParams? existingItem;
+    try {
+      existingItem = createOrderParams?.menuItems.firstWhere(
+        (item) => item.menuItemId == createOrderItemParams.menuItemId,
+      );
+    } catch (e) {
+      existingItem = null;
+    }
+
+    if (existingItem != null) {
+      // If the item is already in the cart, increase the quantity
+      existingItem.count += createOrderItemParams.count;
+    } else {
+      // If the item is not in the cart, add it to the cart
+      createOrderParams?.menuItems.add(createOrderItemParams);
+    }
+
+    int totalMenuItemCount = 0;
+    for (CreateOrderItemParams item in createOrderParams?.menuItems ?? []) {
+      totalMenuItemCount += item.count;
+    }
+    final int index = createOrderParams?.menuItems.length ?? -1;
     notifyListeners();
+    return index;
   }
 
-  void removeMenuItemFromOrder(CreateOrderItemParams createOrderItemParams) {
+  int removeMenuItemFromOrder(CreateOrderItemParams createOrderItemParams) {
     createOrderParams?.menuItems.remove(createOrderItemParams);
+    final int index =
+        createOrderParams?.menuItems.indexOf(createOrderItemParams) ?? -1;
     notifyListeners();
+    return index;
   }
 
   void subtractQuantity(CreateOrderItemParams createOrderItemParams) {
     createOrderParams?.menuItems
         .firstWhere((element) => element == createOrderItemParams)
         .count--;
-    notifyListeners();
-  }
 
-  void addQuantity(CreateOrderItemParams createOrderItemParams) {
-    createOrderParams?.menuItems
-        .firstWhere((element) => element == createOrderItemParams)
-        .count++;
     notifyListeners();
   }
 
@@ -90,6 +108,8 @@ class OrderProvider extends ChangeNotifier {
     createOrderParams?.menuItems
         .firstWhere((element) => element == createOrderItemParams)
         .comment = createOrderItemParams.comment;
-    notifyListeners();
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      notifyListeners();
+    });
   }
 }

@@ -3,6 +3,7 @@ import "package:app/core/params/params.dart";
 import "package:app/features/displayMenuItems/business/entities/menu_item_entity.dart";
 import "package:app/features/displayMenuItems/business/entities/menu_item_types_entity.dart";
 import "package:app/features/displayMenuItems/presentation/providers/menu_item_type_provider.dart";
+import "package:app/features/order/presentation/providers/new_order_provider.dart";
 import "package:app/features/order/presentation/widgets/menu_item_card.dart";
 
 import "package:flutter/material.dart";
@@ -19,15 +20,11 @@ class _PhoneMenuItemGridState extends State<PhoneMenuItemGrid> {
   @override
   void initState() {
     super.initState();
-    // Call the provider to get menu item types
-    Future.microtask(
-      () {
-        int? selectedTypeId =
-            Provider.of<MenuItemTypesProvider>(context, listen: false)
-                .selectedTypeId;
-        if (selectedTypeId == null) Navigator.pop(context);
-      },
-    );
+
+    int? selectedTypeId =
+        Provider.of<MenuItemTypesProvider>(context, listen: false)
+            .selectedTypeId;
+    if (selectedTypeId == null) Navigator.pop(context);
   }
 
   @override
@@ -63,7 +60,11 @@ class _PhoneMenuItemGridState extends State<PhoneMenuItemGrid> {
                   for (MenuItemEntity menuItem in menuItems)
                     CustomCard(
                       text: menuItem.name,
-                      onPressed: () => {},
+                      onPressed: () => {
+                        Provider.of<OrderProvider>(context, listen: false)
+                            .addMenuItemToOrder(CreateOrderItemParams(
+                                menuItemId: menuItem.id, count: 1))
+                      },
                     ),
                 if (failure != null)
                   Text(
