@@ -1,9 +1,9 @@
 import 'package:dartz/dartz.dart';
 
-import '../../../../../core/connection/network_info.dart';
-import '../../../../../core/errors/exceptions.dart';
-import '../../../../../core/errors/failure.dart';
-import '../../../../core/params/params.dart';
+import 'package:app/core/connection/network_info.dart';
+import 'package:app/core/errors/exceptions.dart';
+import 'package:app/core/errors/failure.dart';
+import 'package:app/core/params/params.dart';
 import '../../business/repositories/pokemon_repository.dart';
 import '../datasources/pokemon_local_data_source.dart';
 import '../datasources/pokemon_remote_data_source.dart';
@@ -27,8 +27,7 @@ class PokemonRepositoryImpl implements PokemonRepository {
       {required PokemonParams params}) async {
     if (await networkInfo.isConnected!) {
       try {
-        final remotePokemon =
-            await remoteDataSource.getPokemon(params: params);
+        final remotePokemon = await remoteDataSource.getPokemon(params: params);
 
         localDataSource.cachePokemon(remotePokemon);
 

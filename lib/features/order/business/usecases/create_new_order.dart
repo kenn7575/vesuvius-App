@@ -1,8 +1,8 @@
 import 'package:app/features/order/business/entities/order_entiry.dart';
 import 'package:app/features/order/business/repositories/order_repository.dart';
 import 'package:dartz/dartz.dart';
-import '../../../../../core/errors/failure.dart';
-import '../../../../../core/params/params.dart';
+import 'package:app/core/errors/failure.dart';
+import 'package:app/core/params/params.dart';
 
 class CreateNewOrder {
   final OrderRepository newOrderRepository;

@@ -7,9 +7,9 @@ import 'package:app/features/displayMenuItems/data/repositories/menu_item_reposi
 import 'package:data_connection_checker_tv/data_connection_checker.dart';
 import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
-import '../../../../../core/connection/network_info.dart';
-import '../../../../../core/errors/failure.dart';
-import '../../../../core/params/params.dart';
+import 'package:app/core/connection/network_info.dart';
+import 'package:app/core/errors/failure.dart';
+import 'package:app/core/params/params.dart';
 import '../../data/datasources/menu_item_type_remote_data_source.dart';
 import '../../data/repositories/menu_item_type_repository_impl.dart';
 

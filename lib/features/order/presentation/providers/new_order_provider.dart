@@ -1,6 +1,14 @@
+import 'package:app/core/connection/network_info.dart';
+import 'package:app/core/security/authenticated_dio_client.dart';
 import 'package:app/features/order/business/entities/order_entiry.dart';
+import 'package:app/features/order/business/usecases/create_new_order.dart';
+import 'package:app/features/order/data/datasources/order_remote_data_source.dart';
+import 'package:app/features/order/data/repositories/order_repository_impl.dart';
 import 'package:app/features/select_table_for_order/business/entities/reservation_entity.dart';
 import 'package:app/features/select_table_for_order/business/entities/table_entiry.dart';
+import 'package:app/utils/generate_comment.dart';
+import 'package:data_connection_checker_tv/data_connection_checker.dart';
+import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:app/core/errors/failure.dart';
 import 'package:app/core/params/params.dart';
@@ -79,10 +87,6 @@ class OrderProvider extends ChangeNotifier {
       createOrderParams?.menuItems.add(createOrderItemParams);
     }
 
-    int totalMenuItemCount = 0;
-    for (CreateOrderItemParams item in createOrderParams?.menuItems ?? []) {
-      totalMenuItemCount += item.count;
-    }
     final int index = createOrderParams?.menuItems.length ?? -1;
     notifyListeners();
     return index;
@@ -104,12 +108,96 @@ class OrderProvider extends ChangeNotifier {
     notifyListeners();
   }
 
-  void commentOnOrderItem(CreateOrderItemParams createOrderItemParams) {
-    createOrderParams?.menuItems
-        .firstWhere((element) => element == createOrderItemParams)
-        .comment = createOrderItemParams.comment;
-    WidgetsBinding.instance.addPostFrameCallback((_) {
+  void commentOnOrderItem(
+      CreateOrderItemParams createOrderItemParams, String? newComment) {
+    if (newComment != null && newComment.isEmpty) {
+      newComment = null;
+    }
+    // Find the item to be commented on
+    final item = createOrderParams?.menuItems
+        .firstWhere((element) => element == createOrderItemParams);
+
+    if (item != null) {
+      // Check if there are other items with the same menuItemId and comment
+      CreateOrderItemParams? duplicateItem;
+      try {
+        duplicateItem = createOrderParams?.menuItems.firstWhere(
+          (element) =>
+              element.menuItemId == item.menuItemId &&
+              (element.comment == newComment) &&
+              element != item,
+        );
+      } catch (e) {
+        duplicateItem = null;
+      }
+
+      if (duplicateItem != null) {
+        // Merge the items by incrementing the count
+        duplicateItem.count += item.count;
+        // Remove the original item
+        createOrderParams?.menuItems.remove(item);
+      } else {
+        // Update the comment
+        item.comment = newComment;
+      }
+      print(createOrderParams?.menuItems.length);
+    }
+
+    notifyListeners();
+  }
+
+  void dublicateOrderItem(CreateOrderItemParams createOrderItemParams) {
+    String baseComment = createOrderItemParams.comment ?? "Copy";
+    int copyNumber = 0;
+    String newComment = generateComment(baseComment, copyNumber);
+
+    while (createOrderParams?.menuItems.any((item) =>
+            item.menuItemId == createOrderItemParams.menuItemId &&
+            item.comment == newComment) ??
+        false) {
+      copyNumber++;
+      newComment = generateComment(baseComment, copyNumber);
+    }
+
+    CreateOrderItemParams itemCopy = CreateOrderItemParams(
+      menuItemId: createOrderItemParams.menuItemId,
+      count: 1,
+      comment: newComment,
+    );
+
+    createOrderParams?.menuItems.add(itemCopy);
+    notifyListeners();
+  }
+
+  void placeOrderOrFailure() async {
+    NewOrderRepositoryImpl repository = NewOrderRepositoryImpl(
+      remoteDataSource:
+          OrderRemoteDataSourceImpl(dioWithAuth: AuthenticatedDioClient()),
+      networkInfo: NetworkInfoImpl(DataConnectionChecker()),
+    );
+
+    if (createOrderParams == null) {
+      failure = ServerFailure(errorMessage: 'No order items');
       notifyListeners();
-    });
+      return;
+    }
+
+    final faliureOrorderEntity =
+        await CreateNewOrder(newOrderRepository: repository).call(
+      createOrderParams: createOrderParams!,
+    );
+
+    faliureOrorderEntity.fold(
+      (newFailure) {
+        orderEntity = null;
+        failure = newFailure;
+        notifyListeners();
+      },
+      (newPokemon) {
+        orderEntity = newPokemon;
+        failure = null;
+        notifyListeners();
+      },
+    );
   }
 }

@@ -1,5 +1,3 @@
-import 'package:app/features/select_table_for_order/business/entities/table_entiry.dart';
-
 class NoParams {}
 
 class TemplateParams {}
@@ -64,6 +62,18 @@ class CreateOrderItemParams {
     required this.count,
     this.comment,
   });
+
+  @override
+  bool operator ==(Object other) {
+    if (identical(this, other)) return true;
+    if (other is! CreateOrderItemParams) return false;
+    return other.menuItemId == menuItemId &&
+        other.count == count &&
+        other.comment == comment;
+  }
+
+  @override
+  int get hashCode => Object.hash(menuItemId, count, comment);
 }
 
 class CreateOrderTableParams {

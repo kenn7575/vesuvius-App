@@ -3,8 +3,8 @@ import 'package:app/features/displayMenuItems/business/repositories/menu_item_re
 import 'package:app/features/displayMenuItems/data/models/menu_item_models.dart';
 import 'package:dartz/dartz.dart';
 
-import '../../../../../core/connection/network_info.dart';
-import '../../../../../core/errors/failure.dart';
+import 'package:app/core/connection/network_info.dart';
+import 'package:app/core/errors/failure.dart';
 import '../datasources/menu_item_remote_data_source.dart';
 
 class MenuItemRepositoryImpl implements MenuItemRepository {

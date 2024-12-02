@@ -1,4 +1,4 @@
-import '../../../../../core/constants/constants.dart';
+import 'package:app/core/constants/constants.dart';
 import '../../business/entities/pokemon_image_entity.dart';
 
 class PokemonImageModel extends PokemonImageEntity {

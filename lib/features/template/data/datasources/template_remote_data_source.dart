@@ -1,6 +1,6 @@
 import 'package:dio/dio.dart';
-import '../../../../../core/errors/exceptions.dart';
-import '../../../../../core/params/params.dart';
+import 'package:app/core/errors/exceptions.dart';
+import 'package:app/core/params/params.dart';
 import '../models/template_model.dart';
 
 abstract class TemplateRemoteDataSource {
@@ -13,7 +13,8 @@ class TemplateRemoteDataSourceImpl implements TemplateRemoteDataSource {
   TemplateRemoteDataSourceImpl({required this.dio});
 
   @override
-  Future<TemplateModel> getTemplate({required TemplateParams templateParams}) async {
+  Future<TemplateModel> getTemplate(
+      {required TemplateParams templateParams}) async {
     final response = await dio.get(
       'https://pokeapi.co/api/v2/pokemon/',
       queryParameters: {

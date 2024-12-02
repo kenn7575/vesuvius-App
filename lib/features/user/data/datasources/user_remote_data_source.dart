@@ -4,8 +4,8 @@ import 'package:app/core/security/authenticated_dio_client.dart';
 import 'package:app/core/security/get_device_id.dart';
 import 'package:app/features/user/data/models/login_user_model.dart';
 import 'package:dio/dio.dart';
-import '../../../../../../core/errors/exceptions.dart';
-import '../../../../../../core/params/params.dart';
+import 'package:app/core/errors/exceptions.dart';
+import 'package:app/core/params/params.dart';
 import '../models/user_model.dart';
 
 abstract class UserRemoteDataSource {

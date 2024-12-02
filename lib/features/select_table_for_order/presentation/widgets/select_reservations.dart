@@ -1,7 +1,5 @@
 import 'package:app/features/order/presentation/providers/new_order_provider.dart';
 import 'package:app/features/select_table_for_order/presentation/providers/reservation_provider.dart';
-import 'package:app/features/select_table_for_order/presentation/providers/table_provider.dart';
-import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:provider/provider.dart';

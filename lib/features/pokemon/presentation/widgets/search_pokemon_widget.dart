@@ -4,8 +4,8 @@ import 'package:flutter/material.dart';
 import 'dart:math';
 import 'package:provider/provider.dart';
 
-import '../../../../../core/connection/network_info.dart';
-import '../../../../../core/constants/constants.dart';
+import 'package:app/core/connection/network_info.dart';
+import 'package:app/core/constants/constants.dart';
 import '../providers/pokemon_provider.dart';
 import '../providers/selected_pokemon_item_provider.dart';
 import 'custom_elevated_button_widget.dart';

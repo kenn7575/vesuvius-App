@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import '../../../../../core/errors/failure.dart';
+import 'package:app/core/errors/failure.dart';
 import 'pokemon_image_widget.dart';
 import '../../business/entities/pokemon_entity.dart';
 import '../providers/pokemon_provider.dart';

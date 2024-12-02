@@ -1,7 +1,7 @@
 import 'package:app/core/constants/constants.dart';
 import 'package:app/core/errors/failure.dart';
 import 'package:dio/dio.dart';
-import '../../../../../core/errors/exceptions.dart';
+import 'package:app/core/errors/exceptions.dart';
 import '../models/menu_item_type_model.dart';
 
 abstract class MenuItemTypeRemoteDataSource {

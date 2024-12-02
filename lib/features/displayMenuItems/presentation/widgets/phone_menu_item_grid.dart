@@ -1,7 +1,6 @@
 import "package:app/core/errors/failure.dart";
 import "package:app/core/params/params.dart";
 import "package:app/features/displayMenuItems/business/entities/menu_item_entity.dart";
-import "package:app/features/displayMenuItems/business/entities/menu_item_types_entity.dart";
 import "package:app/features/displayMenuItems/presentation/providers/menu_item_type_provider.dart";
 import "package:app/features/order/presentation/providers/new_order_provider.dart";
 import "package:app/features/order/presentation/widgets/menu_item_card.dart";
@@ -13,10 +12,10 @@ class PhoneMenuItemGrid extends StatefulWidget {
   const PhoneMenuItemGrid({super.key});
 
   @override
-  _PhoneMenuItemGridState createState() => _PhoneMenuItemGridState();
+  PhoneMenuItemGridState createState() => PhoneMenuItemGridState();
 }
 
-class _PhoneMenuItemGridState extends State<PhoneMenuItemGrid> {
+class PhoneMenuItemGridState extends State<PhoneMenuItemGrid> {
   @override
   void initState() {
     super.initState();

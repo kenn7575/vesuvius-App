@@ -3,7 +3,7 @@ import 'package:app/core/errors/failure.dart';
 import 'package:app/core/params/params.dart';
 import 'package:app/features/displayMenuItems/data/models/menu_item_models.dart';
 import 'package:dio/dio.dart';
-import '../../../../../core/errors/exceptions.dart';
+import 'package:app/core/errors/exceptions.dart';
 
 abstract class MenuItemRemoteDataSource {
   Future<List<MenuItemModel>> getMenuItems(

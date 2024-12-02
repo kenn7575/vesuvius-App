@@ -1,4 +1,3 @@
-import 'package:app/features/select_table_for_order/business/entities/reservation_entity.dart';
 import 'package:app/features/select_table_for_order/presentation/providers/reservation_provider.dart';
 import 'package:app/features/select_table_for_order/presentation/widgets/select_reservations.dart';
 import 'package:flutter/material.dart';

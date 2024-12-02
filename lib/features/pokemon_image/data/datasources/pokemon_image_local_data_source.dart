@@ -1,7 +1,7 @@
 import 'dart:convert';
 
 import 'package:shared_preferences/shared_preferences.dart';
-import '../../../../../core/errors/exceptions.dart';
+import 'package:app/core/errors/exceptions.dart';
 import '../models/pokemon_image_model.dart';
 
 abstract class PokemonImageLocalDataSource {

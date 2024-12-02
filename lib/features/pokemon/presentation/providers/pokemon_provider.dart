@@ -3,9 +3,9 @@ import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
-import '../../../../../core/connection/network_info.dart';
-import '../../../../../core/errors/failure.dart';
-import '../../../../core/params/params.dart';
+import 'package:app/core/connection/network_info.dart';
+import 'package:app/core/errors/failure.dart';
+import 'package:app/core/params/params.dart';
 import '../../business/entities/pokemon_entity.dart';
 import '../../business/usecases/get_pokemon.dart';
 import '../../data/datasources/pokemon_local_data_source.dart';

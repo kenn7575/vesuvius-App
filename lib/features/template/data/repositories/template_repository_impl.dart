@@ -1,9 +1,9 @@
 import 'package:dartz/dartz.dart';
 
-import '../../../../../core/connection/network_info.dart';
-import '../../../../../core/errors/exceptions.dart';
-import '../../../../../core/errors/failure.dart';
-import '../../../../../core/params/params.dart';
+import 'package:app/core/connection/network_info.dart';
+import 'package:app/core/errors/exceptions.dart';
+import 'package:app/core/errors/failure.dart';
+import 'package:app/core/params/params.dart';
 import '../../business/repositories/template_repository.dart';
 import '../datasources/template_local_data_source.dart';
 import '../datasources/template_remote_data_source.dart';

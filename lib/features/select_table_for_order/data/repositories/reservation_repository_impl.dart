@@ -1,4 +1,3 @@
-import 'package:app/core/errors/exceptions.dart';
 import 'package:app/features/select_table_for_order/data/models/reservation_model.dart';
 import 'package:dartz/dartz.dart';
 import 'package:app/core/connection/network_info.dart';

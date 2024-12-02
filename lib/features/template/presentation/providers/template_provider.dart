@@ -5,9 +5,9 @@ import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
-import '../../../../../core/connection/network_info.dart';
-import '../../../../../core/errors/failure.dart';
-import '../../../../../core/params/params.dart';
+import 'package:app/core/connection/network_info.dart';
+import 'package:app/core/errors/failure.dart';
+import 'package:app/core/params/params.dart';
 import '../../business/entities/template_entity.dart';
 import '../../business/usecases/get_template.dart';
 import '../../data/datasources/template_local_data_source.dart';
@@ -36,7 +36,8 @@ class TemplateProvider extends ChangeNotifier {
       ),
     );
 
-    final failureOrTemplate = await GetTemplate(templateRepository: repository).call(
+    final failureOrTemplate =
+        await GetTemplate(templateRepository: repository).call(
       templateParams: TemplateParams(),
     );
 

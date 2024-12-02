@@ -1,7 +1,7 @@
 import 'dart:convert';
 
 import 'package:shared_preferences/shared_preferences.dart';
-import '../../../../../core/errors/exceptions.dart';
+import 'package:app/core/errors/exceptions.dart';
 import '../models/template_model.dart';
 
 abstract class TemplateLocalDataSource {
@@ -21,7 +21,8 @@ class TemplateLocalDataSourceImpl implements TemplateLocalDataSource {
     final jsonString = sharedPreferences.getString(cachedTemplate);
 
     if (jsonString != null) {
-      return Future.value(TemplateModel.fromJson(json: json.decode(jsonString)));
+      return Future.value(
+          TemplateModel.fromJson(json: json.decode(jsonString)));
     } else {
       throw CacheException();
     }

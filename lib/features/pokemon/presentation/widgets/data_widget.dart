@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import '../../../../../core/constants/constants.dart';
-import '../../../../../core/errors/failure.dart';
+import 'package:app/core/constants/constants.dart';
+import 'package:app/core/errors/failure.dart';
 import '../../business/entities/pokemon_entity.dart';
 import '../providers/pokemon_provider.dart';
 

@@ -6,10 +6,6 @@ class NewOrderPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    var screenSize = MediaQuery.of(context).size;
-    int phoneWidth = 1080;
-
-    // Widget layout = screenSize > phoneWidth ? :
     return const Scaffold(
       body: Center(child: PhoneOrderGrid()),
     );
