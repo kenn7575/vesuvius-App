@@ -1,4 +1,4 @@
-import 'package:app/core/params/params.dart';
+import 'package:app/features/order/data/models/params/create_order_item_params_model.dart';
 import 'package:app/features/order/presentation/providers/new_order_provider.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
@@ -12,7 +12,7 @@ class OrderItemsList extends StatefulWidget {
 
 class _OrderItemsListState extends State<OrderItemsList> {
   final GlobalKey<AnimatedListState> _listKey = GlobalKey<AnimatedListState>();
-  List<CreateOrderItemParams> _items = [];
+  List<CreateOrderItemParamsModel> _items = [];
   late OrderProvider _provider;
 
   @override
@@ -33,8 +33,8 @@ class _OrderItemsListState extends State<OrderItemsList> {
     _updateItems(newItems);
   }
 
-  void _updateItems(List<CreateOrderItemParams> newItems) {
-    final oldItems = List<CreateOrderItemParams>.from(_items);
+  void _updateItems(List<CreateOrderItemParamsModel> newItems) {
+    final oldItems = List<CreateOrderItemParamsModel>.from(_items);
 
     // Remove items not in newItems
     for (int i = oldItems.length - 1; i >= 0; i--) {
@@ -71,7 +71,7 @@ class _OrderItemsListState extends State<OrderItemsList> {
 
   Widget _buildItem(
     BuildContext context,
-    CreateOrderItemParams item,
+    CreateOrderItemParamsModel item,
     Animation<double> animation,
   ) {
     return SizeTransition(
@@ -116,7 +116,7 @@ class _OrderItemsListState extends State<OrderItemsList> {
                   final provider =
                       Provider.of<OrderProvider>(context, listen: false);
                   provider.addMenuItemToOrder(
-                    CreateOrderItemParams(
+                    CreateOrderItemParamsModel(
                       menuItemId: item.menuItemId,
                       quantity: 1,
                     ),
@@ -140,7 +140,7 @@ class _OrderItemsListState extends State<OrderItemsList> {
 
   void _showCommentDialog(
     BuildContext context,
-    CreateOrderItemParams item,
+    CreateOrderItemParamsModel item,
     OrderProvider provider,
   ) {
     final controller = TextEditingController(text: item.comment);
@@ -162,7 +162,7 @@ class _OrderItemsListState extends State<OrderItemsList> {
           ),
           TextButton(
             onPressed: () {
-              final updatedItem = CreateOrderItemParams(
+              final updatedItem = CreateOrderItemParamsModel(
                 menuItemId: item.menuItemId,
                 quantity: item.quantity,
                 comment: item.comment,

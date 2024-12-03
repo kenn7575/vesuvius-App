@@ -1,5 +1,6 @@
 import 'package:app/features/order/business/repositories/order_repository.dart';
 import 'package:app/features/order/data/models/order_model.dart';
+import 'package:app/features/order/data/models/params/create_order_params_model.dart';
 import 'package:dartz/dartz.dart';
 import 'package:app/core/connection/network_info.dart';
 import 'package:app/core/errors/exceptions.dart';
@@ -18,7 +19,7 @@ class NewOrderRepositoryImpl implements OrderRepository {
 
   @override
   Future<Either<Failure, OrderModel>> createNewOrder(
-      {required CreateOrderParams createOrderParams}) async {
+      {required CreateOrderParamsModel createOrderParams}) async {
     if (await networkInfo.isConnected!) {
       try {
         OrderModel createdOrder = await remoteDataSource.createNewOrder(

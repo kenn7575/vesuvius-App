@@ -1,7 +1,7 @@
 import "package:app/core/errors/failure.dart";
-import "package:app/core/params/params.dart";
 import "package:app/features/displayMenuItems/business/entities/menu_item_entity.dart";
 import "package:app/features/displayMenuItems/presentation/providers/menu_item_type_provider.dart";
+import "package:app/features/order/data/models/params/create_order_item_params_model.dart";
 import "package:app/features/order/presentation/providers/new_order_provider.dart";
 import "package:app/features/order/presentation/widgets/menu_item_card.dart";
 
@@ -61,7 +61,7 @@ class PhoneMenuItemGridState extends State<PhoneMenuItemGrid> {
                       text: menuItem.name,
                       onPressed: () => {
                         Provider.of<OrderProvider>(context, listen: false)
-                            .addMenuItemToOrder(CreateOrderItemParams(
+                            .addMenuItemToOrder(CreateOrderItemParamsModel(
                                 menuItemId: menuItem.id, quantity: 1))
                       },
                     ),

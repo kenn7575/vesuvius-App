@@ -3,6 +3,9 @@ import 'package:app/core/security/authenticated_dio_client.dart';
 import 'package:app/features/order/business/entities/order_entiry.dart';
 import 'package:app/features/order/business/usecases/create_new_order.dart';
 import 'package:app/features/order/data/datasources/order_remote_data_source.dart';
+import 'package:app/features/order/data/models/params/create_order_item_params_model.dart';
+import 'package:app/features/order/data/models/params/create_order_params_model.dart';
+import 'package:app/features/order/data/models/params/create_order_table_params_model.dart';
 import 'package:app/features/order/data/repositories/order_repository_impl.dart';
 import 'package:app/features/select_table_for_order/business/entities/reservation_entity.dart';
 import 'package:app/features/select_table_for_order/business/entities/table_entiry.dart';
@@ -10,29 +13,28 @@ import 'package:app/utils/generate_comment.dart';
 import 'package:data_connection_checker_tv/data_connection_checker.dart';
 import 'package:flutter/material.dart';
 import 'package:app/core/errors/failure.dart';
-import 'package:app/core/params/params.dart';
 
 class OrderProvider extends ChangeNotifier {
-  CreateOrderParams?
+  CreateOrderParamsModel?
       createOrderParams; // This is the state that will be used to create a new order
   OrderEntity?
       orderEntity; // after creating a new order, this state will be updated with the new order
   Failure? failure; // This will be used to display errors
-  final Set<CreateOrderTableParams> selectedTables = {};
+  final Set<CreateOrderTableParamsModel> selectedTables = {};
 
   OrderProvider({
     this.createOrderParams,
     this.orderEntity,
     this.failure,
   }) {
-    createOrderParams = CreateOrderParams(orderItems: [], orderTables: []);
+    createOrderParams = CreateOrderParamsModel(orderItems: [], orderTables: []);
   }
   void selectTable({TableEntity? table, ReservationEntity? reservation}) {
     if (table == null && reservation?.reservationTables?.isEmpty == true) {
       return;
     }
     if (table != null) {
-      CreateOrderTableParams cotp = CreateOrderTableParams(
+      CreateOrderTableParamsModel cotp = CreateOrderTableParamsModel(
         tableId: table.id,
       );
       createOrderParams?.orderTables.add(cotp);
@@ -42,7 +44,7 @@ class OrderProvider extends ChangeNotifier {
       selectedTables.clear();
       createOrderParams?.orderTables.clear();
       reservation?.reservationTables?.forEach((element) {
-        CreateOrderTableParams cotp = CreateOrderTableParams(
+        CreateOrderTableParamsModel cotp = CreateOrderTableParamsModel(
           tableId: element.tableId,
         );
         selectedTables.add(cotp);
@@ -67,9 +69,9 @@ class OrderProvider extends ChangeNotifier {
     notifyListeners();
   }
 
-  int addMenuItemToOrder(CreateOrderItemParams createOrderItemParams) {
+  int addMenuItemToOrder(CreateOrderItemParamsModel createOrderItemParams) {
     // Check if the item is already in the cart
-    CreateOrderItemParams? existingItem;
+    CreateOrderItemParamsModel? existingItem;
     try {
       existingItem = createOrderParams?.orderItems.firstWhere(
         (item) => item.menuItemId == createOrderItemParams.menuItemId,
@@ -91,7 +93,8 @@ class OrderProvider extends ChangeNotifier {
     return index;
   }
 
-  int removeMenuItemFromOrder(CreateOrderItemParams createOrderItemParams) {
+  int removeMenuItemFromOrder(
+      CreateOrderItemParamsModel createOrderItemParams) {
     createOrderParams?.orderItems.remove(createOrderItemParams);
     final int index =
         createOrderParams?.orderItems.indexOf(createOrderItemParams) ?? -1;
@@ -99,7 +102,7 @@ class OrderProvider extends ChangeNotifier {
     return index;
   }
 
-  void subtractQuantity(CreateOrderItemParams createOrderItemParams) {
+  void subtractQuantity(CreateOrderItemParamsModel createOrderItemParams) {
     createOrderParams?.orderItems
         .firstWhere((element) => element == createOrderItemParams)
         .quantity--;
@@ -108,7 +111,7 @@ class OrderProvider extends ChangeNotifier {
   }
 
   void commentOnOrderItem(
-      CreateOrderItemParams createOrderItemParams, String? newComment) {
+      CreateOrderItemParamsModel createOrderItemParams, String? newComment) {
     if (newComment != null && newComment.isEmpty) {
       newComment = null;
     }
@@ -118,7 +121,7 @@ class OrderProvider extends ChangeNotifier {
 
     if (item != null) {
       // Check if there are other items with the same menuItemId and comment
-      CreateOrderItemParams? duplicateItem;
+      CreateOrderItemParamsModel? duplicateItem;
       try {
         duplicateItem = createOrderParams?.orderItems.firstWhere(
           (element) =>
@@ -145,7 +148,7 @@ class OrderProvider extends ChangeNotifier {
     notifyListeners();
   }
 
-  void dublicateOrderItem(CreateOrderItemParams createOrderItemParams) {
+  void dublicateOrderItem(CreateOrderItemParamsModel createOrderItemParams) {
     String baseComment = createOrderItemParams.comment ?? "Copy";
     int copyNumber = 0;
     String newComment = generateComment(baseComment, copyNumber);
@@ -158,7 +161,7 @@ class OrderProvider extends ChangeNotifier {
       newComment = generateComment(baseComment, copyNumber);
     }
 
-    CreateOrderItemParams itemCopy = CreateOrderItemParams(
+    CreateOrderItemParamsModel itemCopy = CreateOrderItemParamsModel(
       menuItemId: createOrderItemParams.menuItemId,
       quantity: 1,
       comment: newComment,

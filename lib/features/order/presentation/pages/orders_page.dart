@@ -18,6 +18,10 @@ class OrderPage extends StatelessWidget {
                 onPressed: () => context.go("/orders/table"),
                 child: const Text("Ny ordre"),
               ),
+              FilledButton(
+                onPressed: () => context.go("/orders/confirm"),
+                child: const Text("Se confirmation"),
+              ),
             ],
           ),
         ),

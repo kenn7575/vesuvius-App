@@ -4,11 +4,12 @@ import 'package:app/core/security/authenticated_dio_client.dart';
 import 'package:app/features/order/data/models/order_model.dart';
 import 'package:app/core/errors/exceptions.dart';
 import 'package:app/core/params/params.dart';
+import 'package:app/features/order/data/models/params/create_order_params_model.dart';
 import 'package:dio/dio.dart';
 
 abstract class OrderRemoteDataSource {
   Future<OrderModel> createNewOrder(
-      {required CreateOrderParams createOrderParams});
+      {required CreateOrderParamsModel createOrderParams});
 }
 
 class OrderRemoteDataSourceImpl implements OrderRemoteDataSource {
@@ -18,7 +19,7 @@ class OrderRemoteDataSourceImpl implements OrderRemoteDataSource {
 
   @override
   Future<OrderModel> createNewOrder(
-      {required CreateOrderParams createOrderParams}) async {
+      {required CreateOrderParamsModel createOrderParams}) async {
     try {
       final response = await dioWithAuth.client.post(
         '$kBackendUrl/orders',
