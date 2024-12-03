@@ -1,5 +1,6 @@
 import 'package:app/features/order/presentation/providers/new_order_provider.dart';
 import 'package:app/features/order/presentation/widgets/cart_list.dart';
+import 'package:app/features/user/presentation/providers/user_provider.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
@@ -63,7 +64,8 @@ class _CartSheetState extends State<CartSheet> {
                 fillOverscroll: false,
                 child: Consumer<OrderProvider>(
                   builder: (context, provider, child) {
-                    if (provider.createOrderParams?.menuItems.isEmpty ?? true) {
+                    if (provider.createOrderParams?.orderItems.isEmpty ??
+                        true) {
                       return const Center(
                         child: Text('No items in cart'),
                       );
@@ -79,7 +81,16 @@ class _CartSheetState extends State<CartSheet> {
                                 padding: const EdgeInsets.all(8.0),
                                 child: ElevatedButton(
                                   onPressed: () {
-                                    // Handle order submission
+                                    // get the user id
+                                    final userProvider =
+                                        Provider.of<UserProvider>(context,
+                                            listen: false);
+                                    final userId = userProvider.user?.id;
+
+                                    // set the waiter id
+                                    provider.createOrderParams?.waiterId =
+                                        userId;
+                                    provider.placeOrderOrFailure();
                                   },
                                   style: ElevatedButton.styleFrom(
                                     padding: const EdgeInsets.symmetric(

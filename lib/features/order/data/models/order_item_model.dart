@@ -5,7 +5,7 @@ class OrderItemModel extends OrderItemEntity {
     required super.id,
     required super.orderId,
     required super.menuItemId,
-    required super.count,
+    required super.quantity,
     super.comment,
     required super.priceInOere,
   });
@@ -15,7 +15,7 @@ class OrderItemModel extends OrderItemEntity {
       id: json[kId],
       orderId: json[kOrderId],
       menuItemId: json[kMenuItemId],
-      count: json[kCount],
+      quantity: json[kQuantity],
       comment: json[kComment],
       priceInOere: json[kPriceInOere],
     );
@@ -33,7 +33,7 @@ class OrderItemModel extends OrderItemEntity {
       kId: id,
       kOrderId: orderId,
       kMenuItemId: menuItemId,
-      kCount: count,
+      kQuantity: quantity,
       kComment: comment,
       kPriceInOere: priceInOere,
     };
@@ -43,6 +43,6 @@ class OrderItemModel extends OrderItemEntity {
 const String kId = 'id';
 const String kOrderId = 'order_id';
 const String kMenuItemId = 'menu_item_id';
-const String kCount = 'count';
+const String kQuantity = 'count';
 const String kComment = 'comment';
 const String kPriceInOere = 'price_in_oere';

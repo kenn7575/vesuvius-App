@@ -2,7 +2,7 @@ class OrderItemEntity {
   final int id;
   final int orderId;
   final int menuItemId;
-  final int count;
+  final int quantity;
   final String? comment;
   final int priceInOere;
 
@@ -10,7 +10,7 @@ class OrderItemEntity {
     required this.id,
     required this.orderId,
     required this.menuItemId,
-    required this.count,
+    required this.quantity,
     this.comment,
     required this.priceInOere,
   });

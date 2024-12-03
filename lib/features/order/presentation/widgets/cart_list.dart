@@ -25,22 +25,21 @@ class _OrderItemsListState extends State<OrderItemsList> {
     super.didChangeDependencies();
     _provider = Provider.of<OrderProvider>(context);
     _provider.addListener(_onProviderUpdate);
-    _items = List.from(_provider.createOrderParams?.menuItems ?? []);
+    _items = List.from(_provider.createOrderParams?.orderItems ?? []);
   }
 
   void _onProviderUpdate() {
-    final newItems = _provider.createOrderParams?.menuItems ?? [];
+    final newItems = _provider.createOrderParams?.orderItems ?? [];
     _updateItems(newItems);
   }
 
   void _updateItems(List<CreateOrderItemParams> newItems) {
-    final oldItems = _items;
-    final oldIds = oldItems.map((item) => item.menuItemId).toSet();
-    final newIds = newItems.map((item) => item.menuItemId).toSet();
+    final oldItems = List<CreateOrderItemParams>.from(_items);
 
-    // Items to remove
+    // Remove items not in newItems
     for (int i = oldItems.length - 1; i >= 0; i--) {
-      if (!newIds.contains(oldItems[i].menuItemId)) {
+      final oldItem = oldItems[i];
+      if (!newItems.contains(oldItem)) {
         final removedItem = _items.removeAt(i);
         _listKey.currentState?.removeItem(
           i,
@@ -49,18 +48,17 @@ class _OrderItemsListState extends State<OrderItemsList> {
       }
     }
 
-    // Items to add
+    // Add items not in oldItems
     for (int i = 0; i < newItems.length; i++) {
-      if (!oldIds.contains(newItems[i].menuItemId)) {
-        _items.insert(i, newItems[i]);
+      final newItem = newItems[i];
+      if (i >= _items.length || _items[i] != newItem) {
+        _items.insert(i, newItem);
         _listKey.currentState?.insertItem(i);
-      } else {
+      } else if (_items[i] != newItem) {
         // Update existing item if necessary
-        if (newItems[i] != _items[i]) {
-          setState(() {
-            _items[i] = newItems[i];
-          });
-        }
+        setState(() {
+          _items[i] = newItem;
+        });
       }
     }
   }
@@ -85,19 +83,26 @@ class _OrderItemsListState extends State<OrderItemsList> {
           subtitle: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              Text('Quantity: ${item.count}'),
-              if (item.comment != null) Text('Comment: ${item.comment}'),
+              Text('Quantity: ${item.quantity}'),
+              if (item.comment != null) Text('· ${item.comment}'),
             ],
           ),
           trailing: Row(
             mainAxisSize: MainAxisSize.min,
             children: [
               IconButton(
+                  onPressed: () {
+                    final provider =
+                        Provider.of<OrderProvider>(context, listen: false);
+                    provider.dublicateOrderItem(item);
+                  },
+                  icon: const Icon(Icons.copy)),
+              IconButton(
                 icon: const Icon(Icons.remove),
                 onPressed: () {
                   final provider =
                       Provider.of<OrderProvider>(context, listen: false);
-                  if (item.count > 1) {
+                  if (item.quantity > 1) {
                     provider.subtractQuantity(item);
                   } else {
                     provider.removeMenuItemFromOrder(item);
@@ -113,7 +118,7 @@ class _OrderItemsListState extends State<OrderItemsList> {
                   provider.addMenuItemToOrder(
                     CreateOrderItemParams(
                       menuItemId: item.menuItemId,
-                      count: 1,
+                      quantity: 1,
                     ),
                   );
                 },
@@ -159,10 +164,10 @@ class _OrderItemsListState extends State<OrderItemsList> {
             onPressed: () {
               final updatedItem = CreateOrderItemParams(
                 menuItemId: item.menuItemId,
-                count: item.count,
-                comment: controller.text,
+                quantity: item.quantity,
+                comment: item.comment,
               );
-              provider.commentOnOrderItem(updatedItem);
+              provider.commentOnOrderItem(updatedItem, controller.text);
               Navigator.pop(context);
             },
             child: const Text('Save'),
@@ -176,7 +181,7 @@ class _OrderItemsListState extends State<OrderItemsList> {
   Widget build(BuildContext context) {
     return Consumer<OrderProvider>(
       builder: (context, provider, child) {
-        final items = provider.createOrderParams?.menuItems ?? [];
+        final items = provider.createOrderParams?.orderItems ?? [];
 
         return AnimatedList(
           key: _listKey,

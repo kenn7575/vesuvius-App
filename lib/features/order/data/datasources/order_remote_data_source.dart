@@ -1,8 +1,10 @@
+import 'package:app/core/constants/constants.dart';
+import 'package:app/core/errors/failure.dart';
+import 'package:app/core/security/authenticated_dio_client.dart';
 import 'package:app/features/order/data/models/order_model.dart';
+import 'package:app/core/errors/exceptions.dart';
+import 'package:app/core/params/params.dart';
 import 'package:dio/dio.dart';
-import '../../../../../core/errors/exceptions.dart';
-import '../../../../../core/params/params.dart';
-import '../models/order_item_model.dart';
 
 abstract class OrderRemoteDataSource {
   Future<OrderModel> createNewOrder(
@@ -10,24 +12,30 @@ abstract class OrderRemoteDataSource {
 }
 
 class OrderRemoteDataSourceImpl implements OrderRemoteDataSource {
-  final Dio dio;
+  final AuthenticatedDioClient dioWithAuth;
 
-  OrderRemoteDataSourceImpl({required this.dio});
+  OrderRemoteDataSourceImpl({required this.dioWithAuth});
 
   @override
   Future<OrderModel> createNewOrder(
       {required CreateOrderParams createOrderParams}) async {
-    final response = await dio.get(
-      'https://pokeapi.co/api/v2/pokemon/',
-      queryParameters: {
-        'api_key': 'if needed',
-      },
-    );
-    // TODO: add create logic
-
-    if (response.statusCode == 200) {
+    try {
+      final response = await dioWithAuth.client.post(
+        '$kBackendUrl/orders',
+        data: createOrderParams.toJson(),
+      );
       return OrderModel.fromJson(json: response.data);
-    } else {
+    } on DioException catch (e) {
+      final message =
+          e.response?.data is Map ? e.response?.data['message'] : null;
+      if (e.response != null) {
+        throw ServerFailure(
+            errorMessage: message ?? "An error occurred",
+            statusCode: e.response?.statusCode);
+      } else {
+        throw ServerException();
+      }
+    } catch (e) {
       throw ServerException();
     }
   }
