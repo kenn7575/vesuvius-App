@@ -1,5 +1,6 @@
 import 'package:app/core/constants/constants.dart';
 import 'package:app/core/errors/failure.dart';
+import 'package:app/core/security/authenticated_dio_client.dart';
 import 'package:app/features/select_table_for_order/data/models/table_model.dart';
 import 'package:dio/dio.dart';
 import 'package:app/core/errors/exceptions.dart';
@@ -9,17 +10,16 @@ abstract class TableRemoteDataSource {
 }
 
 class TableRemoteDataSourceImpl implements TableRemoteDataSource {
-  final Dio dio;
+  final AuthenticatedDioClient dioAuth;
 
-  TableRemoteDataSourceImpl({required this.dio});
+  TableRemoteDataSourceImpl({required this.dioAuth});
 
   @override
   Future<List<TableModel>> getTables() async {
     try {
-      final response = await dio.get(
+      final response = await dioAuth.client.get(
         '$kBackendUrl/tables',
       );
-      //TODO : add access control here
 
       return TableModel.fromJsonList(response.data);
     } on DioException catch (e) {

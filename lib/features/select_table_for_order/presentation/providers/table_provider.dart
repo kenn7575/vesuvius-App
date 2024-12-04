@@ -1,3 +1,4 @@
+import 'package:app/core/security/authenticated_dio_client.dart';
 import 'package:app/features/select_table_for_order/business/entities/table_entiry.dart';
 import 'package:app/features/select_table_for_order/business/usecases/get_tables.dart';
 import 'package:app/features/select_table_for_order/data/datasources/table_remote_data_source.dart';
@@ -21,7 +22,7 @@ class TableProvider extends ChangeNotifier {
   void eitherFailureOrTable() async {
     TableRepositoryImpl repository = TableRepositoryImpl(
       remoteDataSource: TableRemoteDataSourceImpl(
-        dio: Dio(),
+        dioAuth: AuthenticatedDioClient(),
       ),
       networkInfo: NetworkInfoImpl(
         DataConnectionChecker(),
