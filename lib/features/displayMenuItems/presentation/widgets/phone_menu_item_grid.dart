@@ -62,7 +62,9 @@ class PhoneMenuItemGridState extends State<PhoneMenuItemGrid> {
                       onPressed: () => {
                         Provider.of<OrderProvider>(context, listen: false)
                             .addMenuItemToOrder(CreateOrderItemParamsModel(
-                                menuItemId: menuItem.id, quantity: 1))
+                                menuItemId: menuItem.id,
+                                quantity: 1,
+                                name: menuItem.name))
                       },
                     ),
                 if (failure != null)

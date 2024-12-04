@@ -5,6 +5,7 @@ class CreateOrderItemParamsModel extends CreateOrderItemParamsEntiry {
     required super.menuItemId,
     required super.quantity,
     super.comment,
+    super.name,
   });
 
   @override
@@ -25,6 +26,7 @@ class CreateOrderItemParamsModel extends CreateOrderItemParamsEntiry {
       menuItemId: json[kMenuItemId],
       quantity: json[kQuantity],
       comment: json[kComment],
+      name: json[kName],
     );
   }
 
@@ -39,6 +41,7 @@ class CreateOrderItemParamsModel extends CreateOrderItemParamsEntiry {
     return models.map((model) => model.toJson()).toList();
   }
 
+  // dont include name in toJson because its only used in UI
   Map<String, dynamic> toJson() {
     return {
       kMenuItemId: menuItemId,
@@ -51,3 +54,4 @@ class CreateOrderItemParamsModel extends CreateOrderItemParamsEntiry {
 const String kMenuItemId = 'menu_item_id';
 const String kQuantity = 'quantity';
 const String kComment = 'comment';
+const String kName = 'name';

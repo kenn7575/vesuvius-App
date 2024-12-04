@@ -77,9 +77,9 @@ class _OrderItemsListState extends State<OrderItemsList> {
     return SizeTransition(
       sizeFactor: animation,
       child: Card(
-        margin: const EdgeInsets.all(8),
+        margin: const EdgeInsets.all(6),
         child: ListTile(
-          title: Text('Item ID: ${item.menuItemId}'),
+          title: Text('Navn: ${item.name ?? item.menuItemId}'),
           subtitle: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
