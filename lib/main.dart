@@ -8,8 +8,6 @@ import 'package:app/features/user/presentation/pages/login_page.dart';
 import 'package:app/features/user/presentation/providers/user_provider.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import 'features/pokemon/presentation/providers/pokemon_provider.dart';
-import 'features/pokemon/presentation/providers/selected_pokemon_item_provider.dart';
 import 'features/skeleton/providers/selected_page_provider.dart';
 
 void main() {
@@ -25,12 +23,6 @@ class MyApp extends StatelessWidget {
       providers: [
         ChangeNotifierProvider(
           create: (context) => SelectedPageProvider(),
-        ),
-        ChangeNotifierProvider(
-          create: (context) => PokemonProvider(),
-        ),
-        ChangeNotifierProvider(
-          create: (context) => SelectedPokemonItemProvider(),
         ),
         ChangeNotifierProvider(
           create: (context) => UserProvider(),
