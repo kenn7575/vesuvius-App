@@ -1,6 +1,6 @@
 import 'package:app/features/displayMenuItems/presentation/pages/menu_item_page.dart';
 import 'package:app/features/displayMenuItems/presentation/pages/menu_item_type_page.dart';
-import 'package:app/features/order/presentation/pages/order_confirmation_page.dart';
+import 'package:app/features/order/presentation/pages/order_details_page.dart';
 import 'package:app/features/order/presentation/pages/orders_page.dart';
 import 'package:app/features/select_table_for_order/presentation/pages/select_tables_page.dart';
 import 'package:app/features/select_table_for_order/presentation/pages/select_reservation_page.dart';
@@ -96,12 +96,6 @@ final GoRouter routerConfig = GoRouter(
                   ),
                 ),
                 GoRoute(
-                  path: 'confirm',
-                  builder: (BuildContext context, GoRouterState state) {
-                    return OrderConfirmationPage();
-                  },
-                ),
-                GoRoute(
                   path: 'reservation',
                   pageBuilder: (context, state) => CustomTransitionPage(
                     child: const LocationTabBarPage(
@@ -159,6 +153,13 @@ final GoRouter routerConfig = GoRouter(
                       ],
                     ),
                   ],
+                ),
+                GoRoute(
+                  path: ':id',
+                  builder: (BuildContext context, GoRouterState state) {
+                    final orderId = state.pathParameters['id'];
+                    return OrderDetailsPage(orderId: orderId!);
+                  },
                 ),
               ],
             ),

@@ -5,12 +5,12 @@ import 'package:app/features/order/data/models/order_table_model.dart';
 class OrderModel extends OrderEntity {
   const OrderModel({
     required super.id,
-    super.comment,
     required super.waiterId,
+    super.comment,
     required super.createdAt,
     required super.updatedAt,
-    super.orderItems,
     required super.status,
+    super.orderItems,
     super.orderTables,
   });
 
@@ -57,4 +57,4 @@ const String kCreatedAt = 'created_at';
 const String kUpdatedAt = 'updated_at';
 const String kStatus = 'status';
 const String kOrderItems = 'order_items';
-const String kOrderTables = 'order_tables';
+const String kOrderTables = 'tables_in_orders_and_reservations';

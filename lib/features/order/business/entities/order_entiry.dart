@@ -21,4 +21,12 @@ class OrderEntity {
     this.orderItems,
     this.orderTables,
   });
+
+  // get tables list as String
+  String get tablesAsString {
+    if (orderTables == null) {
+      return '';
+    }
+    return orderTables!.map((e) => e.tableId.toString()).join(', ');
+  }
 }

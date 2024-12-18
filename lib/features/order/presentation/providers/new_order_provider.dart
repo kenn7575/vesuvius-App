@@ -1,7 +1,11 @@
+import 'dart:ffi';
+
 import 'package:app/core/connection/network_info.dart';
+import 'package:app/core/params/params.dart';
 import 'package:app/core/security/authenticated_dio_client.dart';
 import 'package:app/features/order/business/entities/order_entiry.dart';
 import 'package:app/features/order/business/usecases/create_new_order.dart';
+import 'package:app/features/order/business/usecases/get_order.dart';
 import 'package:app/features/order/data/datasources/order_remote_data_source.dart';
 import 'package:app/features/order/data/models/params/create_order_item_params_model.dart';
 import 'package:app/features/order/data/models/params/create_order_params_model.dart';
@@ -10,6 +14,7 @@ import 'package:app/features/order/data/repositories/order_repository_impl.dart'
 import 'package:app/features/select_table_for_order/business/entities/reservation_entity.dart';
 import 'package:app/features/select_table_for_order/business/entities/table_entiry.dart';
 import 'package:app/utils/generate_comment.dart';
+import 'package:dartz/dartz.dart';
 import 'package:data_connection_checker_tv/data_connection_checker.dart';
 import 'package:flutter/material.dart';
 import 'package:app/core/errors/failure.dart';
@@ -21,6 +26,7 @@ class OrderProvider extends ChangeNotifier {
       orderEntity; // after creating a new order, this state will be updated with the new order
   Failure? failure; // This will be used to display errors
   final Set<CreateOrderTableParamsModel> selectedTables = {};
+  bool isNewOrder = false;
 
   OrderProvider({
     this.createOrderParams,
@@ -171,8 +177,46 @@ class OrderProvider extends ChangeNotifier {
     notifyListeners();
   }
 
-  void placeOrderOrFailure() async {
-    NewOrderRepositoryImpl repository = NewOrderRepositoryImpl(
+  Future<void> setIsNewOrder(bool value) async {
+    isNewOrder = value;
+    notifyListeners();
+  }
+
+  Future<void> eitherFailureOrOrder({required String orderId}) async {
+    OrderRepositoryImpl repository = OrderRepositoryImpl(
+      remoteDataSource:
+          OrderRemoteDataSourceImpl(dioWithAuth: AuthenticatedDioClient()),
+      networkInfo: NetworkInfoImpl(DataConnectionChecker()),
+    );
+
+    //check if orderId is a number
+    if (int.tryParse(orderId) == null) {
+      failure = ServerFailure(errorMessage: 'Invalid order id');
+      notifyListeners();
+      return;
+    }
+
+    final faliureOrorderEntity = await GetOrder(orderRepository: repository)
+        .call(getOrderParams: GetOrderParams(orderId: int.parse(orderId)));
+
+    faliureOrorderEntity.fold(
+      (newFailure) {
+        orderEntity = null;
+        isNewOrder = false;
+        failure = newFailure;
+        notifyListeners();
+      },
+      (newOrder) {
+        orderEntity = newOrder;
+        isNewOrder = false;
+        failure = null;
+        notifyListeners();
+      },
+    );
+  }
+
+  Future<void> placeOrderOrFailure() async {
+    OrderRepositoryImpl repository = OrderRepositoryImpl(
       remoteDataSource:
           OrderRemoteDataSourceImpl(dioWithAuth: AuthenticatedDioClient()),
       networkInfo: NetworkInfoImpl(DataConnectionChecker()),
@@ -192,11 +236,13 @@ class OrderProvider extends ChangeNotifier {
     faliureOrorderEntity.fold(
       (newFailure) {
         orderEntity = null;
+        isNewOrder = false;
         failure = newFailure;
         notifyListeners();
       },
       (newOrder) {
         orderEntity = newOrder;
+        isNewOrder = true;
         failure = null;
         notifyListeners();
       },

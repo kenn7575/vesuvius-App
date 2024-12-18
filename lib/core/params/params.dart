@@ -2,13 +2,6 @@ class NoParams {}
 
 class TemplateParams {}
 
-class PokemonParams {
-  final String id;
-  const PokemonParams({
-    required this.id,
-  });
-}
-
 class LoginUserParams {
   final String email;
   final String password;
@@ -25,8 +18,6 @@ class GetUserParams {
   });
 }
 
-class PokemonImageParams {}
-
 class IsTokenExpiredParams {
   final String token;
   const IsTokenExpiredParams({
@@ -39,4 +30,11 @@ class GetMenuItemsParams {
   const GetMenuItemsParams(
     this.typeId,
   );
+}
+
+class GetOrderParams {
+  final int orderId;
+  const GetOrderParams({
+    required this.orderId,
+  });
 }

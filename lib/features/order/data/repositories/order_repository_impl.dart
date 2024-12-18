@@ -8,11 +8,11 @@ import 'package:app/core/errors/failure.dart';
 import 'package:app/core/params/params.dart';
 import '../datasources/order_remote_data_source.dart';
 
-class NewOrderRepositoryImpl implements OrderRepository {
+class OrderRepositoryImpl implements OrderRepository {
   final OrderRemoteDataSource remoteDataSource;
   final NetworkInfo networkInfo;
 
-  NewOrderRepositoryImpl({
+  OrderRepositoryImpl({
     required this.remoteDataSource,
     required this.networkInfo,
   });
@@ -31,6 +31,22 @@ class NewOrderRepositoryImpl implements OrderRepository {
       }
     } else {
       // no internet
+      return Left(CacheFailure(errorMessage: 'No internet connection.'));
+    }
+  }
+
+  @override
+  Future<Either<Failure, OrderModel>> getOrder(
+      {required GetOrderParams getOrderParams}) async {
+    if (await networkInfo.isConnected!) {
+      try {
+        OrderModel order =
+            await remoteDataSource.getOrder(getOrderParams: getOrderParams);
+        return Right(order);
+      } on ServerException {
+        return Left(ServerFailure(errorMessage: 'This is a server exception'));
+      }
+    } else {
       return Left(CacheFailure(errorMessage: 'No internet connection.'));
     }
   }

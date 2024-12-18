@@ -10,6 +10,7 @@ import 'package:dio/dio.dart';
 abstract class OrderRemoteDataSource {
   Future<OrderModel> createNewOrder(
       {required CreateOrderParamsModel createOrderParams});
+  Future<OrderModel> getOrder({required GetOrderParams getOrderParams});
 }
 
 class OrderRemoteDataSourceImpl implements OrderRemoteDataSource {
@@ -24,6 +25,28 @@ class OrderRemoteDataSourceImpl implements OrderRemoteDataSource {
       final response = await dioWithAuth.client.post(
         '$kBackendUrl/orders',
         data: createOrderParams.toJson(),
+      );
+      return OrderModel.fromJson(json: response.data);
+    } on DioException catch (e) {
+      final message =
+          e.response?.data is Map ? e.response?.data['message'] : null;
+      if (e.response != null) {
+        throw ServerFailure(
+            errorMessage: message ?? "An error occurred",
+            statusCode: e.response?.statusCode);
+      } else {
+        throw ServerException();
+      }
+    } catch (e) {
+      throw ServerException();
+    }
+  }
+
+  @override
+  Future<OrderModel> getOrder({required GetOrderParams getOrderParams}) async {
+    try {
+      final response = await dioWithAuth.client.get(
+        '$kBackendUrl/orders/${getOrderParams.orderId}',
       );
       return OrderModel.fromJson(json: response.data);
     } on DioException catch (e) {

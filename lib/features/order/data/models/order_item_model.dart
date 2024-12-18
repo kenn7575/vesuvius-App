@@ -43,6 +43,6 @@ class OrderItemModel extends OrderItemEntity {
 const String kId = 'id';
 const String kOrderId = 'order_id';
 const String kMenuItemId = 'menu_item_id';
-const String kQuantity = 'count';
+const String kQuantity = 'quantity';
 const String kComment = 'comment';
 const String kPriceInOere = 'price_in_oere';

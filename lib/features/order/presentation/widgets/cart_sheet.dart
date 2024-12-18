@@ -2,6 +2,7 @@ import 'package:app/features/order/presentation/providers/new_order_provider.dar
 import 'package:app/features/order/presentation/widgets/cart_list.dart';
 import 'package:app/features/user/presentation/providers/user_provider.dart';
 import 'package:flutter/material.dart';
+import 'package:go_router/go_router.dart';
 import 'package:provider/provider.dart';
 
 class CartSheet extends StatefulWidget {
@@ -80,7 +81,7 @@ class _CartSheetState extends State<CartSheet> {
                               child: Padding(
                                 padding: const EdgeInsets.all(8.0),
                                 child: ElevatedButton(
-                                  onPressed: () {
+                                  onPressed: () async {
                                     // get the user id
                                     final userProvider =
                                         Provider.of<UserProvider>(context,
@@ -90,7 +91,28 @@ class _CartSheetState extends State<CartSheet> {
                                     // set the waiter id
                                     provider.createOrderParams?.waiterId =
                                         userId;
-                                    provider.placeOrderOrFailure();
+
+                                    await provider.placeOrderOrFailure();
+                                    if (provider.orderEntity != null) {
+                                      if (context.mounted) {
+                                        context.go(
+                                            "/orders/${provider.orderEntity?.id}");
+                                      }
+                                    } else {
+                                      if (context.mounted) {
+                                        ScaffoldMessenger.of(context)
+                                            .showSnackBar(
+                                          const SnackBar(
+                                            content: Text(
+                                                'Failed to place order. Please try again.'),
+                                          ),
+                                        );
+                                      }
+                                    }
+                                    if (context.mounted) {
+                                      context.go(
+                                          "/orders/${provider.orderEntity?.id}");
+                                    }
                                   },
                                   style: ElevatedButton.styleFrom(
                                     padding: const EdgeInsets.symmetric(

@@ -45,4 +45,4 @@ class CreateOrderParamsModel extends CreateOrderParamsEntiry {
 const String kComment = 'comment';
 const String kWaiterId = 'waiter_id';
 const String kOrderItems = 'order_items';
-const String kOrderTables = 'order_tables';
+const String kOrderTables = 'tables_in_orders_and_reservations';
